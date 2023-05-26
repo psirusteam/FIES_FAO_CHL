@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1.3 Modelos de área | Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</title>
+  <meta name="description" content="Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1.3 Modelos de área | Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  <meta name="github-repo" content="psirusteam/HHS-Handbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1.3 Modelos de área | Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  
+  <meta name="twitter:description" content="Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  
+
+<meta name="author" content="Andrés Gutiérrez, Stalyn Guerrero" />
+
+
+<meta name="date" content="2023-05-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="fuentes-de-error-en-la-estimación-del-fies.html"/>
+<link rel="next" href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introducción</a></li>
+<li class="chapter" data-level="1" data-path="modelo-de-área-para-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="modelo-de-área-para-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>1</b> Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="modelo-de-rash.html"><a href="modelo-de-rash.html"><i class="fa fa-check"></i><b>1.1</b> Modelo de Rash</a></li>
+<li class="chapter" data-level="1.2" data-path="fuentes-de-error-en-la-estimación-del-fies.html"><a href="fuentes-de-error-en-la-estimación-del-fies.html"><i class="fa fa-check"></i><b>1.2</b> Fuentes de error en la estimación del FIES</a></li>
+<li class="chapter" data-level="1.3" data-path="modelos-de-área.html"><a href="modelos-de-área.html"><i class="fa fa-check"></i><b>1.3</b> Modelos de área</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelo-de-área-de-fay-herriot"><i class="fa fa-check"></i><b>1.3.1</b> Modelo de área de Fay-Herriot</a></li>
+<li class="chapter" data-level="1.3.2" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelo-de-área-de-fay-herriot-con-tranformación-arcoseno."><i class="fa fa-check"></i><b>1.3.2</b> Modelo de área de Fay-Herriot con tranformación arcoseno.</a></li>
+<li class="chapter" data-level="1.3.3" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelos-de-área-con-variable-respuesta-beta."><i class="fa fa-check"></i><b>1.3.3</b> Modelos de área con variable respuesta Beta.</a></li>
+<li class="chapter" data-level="1.3.4" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelos-de-área-con-variable-respuesta-binomial."><i class="fa fa-check"></i><b>1.3.4</b> Modelos de área con variable respuesta Binomial.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>2</b> Estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot"><i class="fa fa-check"></i>Resultado para el modelo de área de Fay-Herriot</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot-con-tranformación-arcoseno"><i class="fa fa-check"></i>Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-binomial."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Binomial.</a></li>
+<li class="chapter" data-level="2.1" data-path="proceso-de-benchmark.html"><a href="proceso-de-benchmark.html"><i class="fa fa-check"></i><b>2.1</b> Proceso de Benchmark</a></li>
+<li class="chapter" data-level="2.2" data-path="validación-de-los-resultados..html"><a href="validación-de-los-resultados..html"><i class="fa fa-check"></i><b>2.2</b> Validación de los resultados.</a></li>
+<li class="chapter" data-level="2.3" data-path="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>2.3</b> Mapa con la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#tabla-con-las-estimaciones-por-comuna."><i class="fa fa-check"></i><b>2.3.1</b> Tabla con las estimaciones por comuna.</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria </a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="modelos-de-área" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Modelos de área<a href="modelos-de-área.html#modelos-de-área" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La estimación de áreas pequeñas es un conjunto de técnicas que permiten la estimación de parámetros de interés para dominios donde los estimadores directos no pueden considerarse lo suficientemente confiables debido a que su varianza es demasiado alta para ser liberada. Las encuestas de oficinas estadísticas nacionales suelen planificarse a un nivel más alto, por lo que cuando se requiere información más detallada, el tamaño de la muestra puede no ser lo suficientemente grande como para garantizar la liberación de estimaciones directas y, en algunos casos, es posible que los dominios más pequeños no cuenten con unidades de muestra. Los métodos de estimación de áreas pequeñas aumentan la confiabilidad de la estimación “tomando fuerza prestada” de un conjunto de áreas en un dominio más grande para el cual el estimador directo es confiable. Esto significa que se utiliza información de otras áreas y / o se explota información adicional de diferentes fuentes.</p>
+<p>Uno de los modelos más utilizados para la estimación de áreas pequeñas es el modelo de Fay-Herriot. El modelo de Fay-Herriot es un modelo lineal mixto que se utiliza para estimar parámetros de interés para pequeñas áreas en presencia de datos auxiliares. El modelo se utiliza para “prestar fuerza” de áreas más grandes a áreas más pequeñas y, por lo tanto, aumentar la precisión de las estimaciones para áreas pequeñas.</p>
+<p>En el modelo de Fay-Herriot, el parámetro de interés en cada área pequeña se modela como una combinación lineal de un estimador directo de la encuesta y un componente predicho basado en un modelo lineal mixto. El modelo relaciona el parámetro de interés con las variables auxiliares conocidas para cada uno de los dominios que constituyen la partición de la población completa. Se incluye un efecto para tener en cuenta la homogeneidad dentro de cada dominio.</p>
+<div id="modelo-de-área-de-fay-herriot" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Modelo de área de Fay-Herriot<a href="modelos-de-área.html#modelo-de-área-de-fay-herriot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sea <span class="math inline">\(P_d\)</span> la probabilidad de encontrar un hogar con inseguridad alimentaria en el <span class="math inline">\(d-\)</span>ésimo dominio de la población. Entonces, el estimador directo de <span class="math inline">\(P_d\)</span> se puede escribir como:</p>
+<p><span class="math display">\[
+\hat{P}^{DIR}_{d} = P_d + e_d
+\]</span></p>
+<p>Ahora bien, <span class="math inline">\(P_d\)</span> se puede modelar de la siguiente manera,</p>
+<p><span class="math display">\[
+P_d = \boldsymbol{x}^{T}_{d}\boldsymbol{\beta} + u_d
+\]</span>
+Luego, reescribiendo <span class="math inline">\(\hat{P}^{DIR}_{d}\)</span> en términos de las dos ecuaciones anteriores tenemos:</p>
+<p><span class="math display">\[
+\hat{P}^{DIR}_{d} = \boldsymbol{x}^{T}_{d}\boldsymbol{\beta} + u_d + e_d
+\]</span></p>
+<p>Ahora, es posible suponer que <span class="math inline">\(\hat{P}^{DIR}_d \sim N(\boldsymbol{x}^{T}_{d}\boldsymbol \beta, \sigma_u^2 +\sigma_{e_d}^2)\)</span>, <span class="math inline">\(\hat{P}^{DIR}_d \mid u_d \sim N(\boldsymbol{x}^{T}_{d}\boldsymbol \beta + u_d,\sigma_{e_d}^2)\)</span> y <span class="math inline">\(u_d \sim N(0, \sigma^2_u)\)</span></p>
+<p>Luego, se asumen distribuciones previas para <span class="math inline">\(\boldsymbol{\beta}\)</span> y <span class="math inline">\(\sigma^2_u\)</span></p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+\beta_p &amp; \sim   &amp; N(0, 10000)\\
+\sigma^2_u &amp;\sim &amp; IG(0.0001, 0.0001)
+\end{eqnarray*}
+\]</span></p>
+<p>por tanto, el estimador bayesiano para <span class="math inline">\(P_d\)</span> esta dado como <span class="math inline">\(\tilde{P}_d = E\left(P_d\mid\hat{P}_d^{DIR}\right)\)</span></p>
+</div>
+<div id="modelo-de-área-de-fay-herriot-con-tranformación-arcoseno." class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Modelo de área de Fay-Herriot con tranformación arcoseno.<a href="modelos-de-área.html#modelo-de-área-de-fay-herriot-con-tranformación-arcoseno." class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En su concepción más básica, el modelo de <strong>Fay-Herriot</strong> es una combinación lineal de covariables. Sin embargo, el resultado de esta combinación pueden tomar valores que se salen del rango aceptable en el que puede estar una proporción; es decir, en general el estimador de Fay-Herriot <span class="math inline">\(\theta \in R\)</span>, mientras que el estimador directo <span class="math inline">\(\theta \in (0,1)\)</span>. La transformación arcoseno esta dada por:</p>
+<p><span class="math display">\[
+\hat{z}_d = arcsin\left( \sqrt{ \hat{\theta}_d} \right)
+\]</span> donde</p>
+<p><span class="math display">\[
+Var\left( \hat{z}_d \right) = \frac{\widehat{DEFF}_d}{4\times n_d} = \frac{1}{4\times n_{d,efectivo} }
+\]</span></p>
+<p>El modelo de Fay-Herriot estaría definido de la siguiente forma:</p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+Z_d \mid \mu_d,\sigma^2_d &amp;  \sim  &amp; N(\mu_d, \sigma^2_d)\\
+\mu_d &amp; = &amp; \boldsymbol{x}^{T}_{d}\boldsymbol{\beta} + u_d \\
+\theta_d &amp; = &amp;  \left(sin(\mu_d)\right)^2
+\end{eqnarray*}
+\]</span> donde <span class="math inline">\(u_d \sim N(0 , \sigma^2)\)</span>.</p>
+<p>Suponga de las distribuciones previas para
+<span class="math inline">\(\boldsymbol{\beta}\)</span> y <span class="math inline">\(\sigma_{u}^{2}\)</span> son dadas por
+<span class="math display">\[
+\begin{eqnarray*}
+\boldsymbol{\beta}  \sim    N\left(0,1000 \right)\\
+\sigma_{u}^{2}  \sim    IG\left(0.0001,0.0001\right)
+\end{eqnarray*}
+\]</span></p>
+</div>
+<div id="modelos-de-área-con-variable-respuesta-beta." class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Modelos de área con variable respuesta Beta.<a href="modelos-de-área.html#modelos-de-área-con-variable-respuesta-beta." class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El modelo beta-logístico fue inicialmente considerado por Jiang y Lahiri (2006b) para un enfoque EBP en uno de sus ejemplos ilustrativos para estimar medias de dominio de población finita.</p>
+<p>El modelo de área beta-logístico estaría dado por las siguientes expresiones
+<span class="math display">\[
+\begin{eqnarray*}
+\hat{p}_{d} \mid P_d &amp; \sim &amp; beta(a_d, b_d)\\
+\end{eqnarray*}
+\]</span>
+La función del enlace es
+<span class="math display">\[
+\begin{eqnarray*}
+logit(P_{d}) \mid \boldsymbol{\beta}, \sigma^2_u  &amp; \sim &amp; N(\boldsymbol{x}_d^T\boldsymbol{\beta},\sigma^2_u)\\
+\end{eqnarray*}
+\]</span>
+Los parámetros <span class="math inline">\(a_d\)</span> y <span class="math inline">\(b_d\)</span> son estimados así:
+<span class="math display">\[
+\begin{eqnarray*}
+a_d &amp;=&amp; P_d \times \phi_d\\
+b_d &amp;=&amp; (1 - P_d) \times \phi_d\\
+\end{eqnarray*}
+\]</span> donde</p>
+<p><span class="math display">\[\phi_d = \frac{n_d}{\widehat{DEFF}_d} -1 = n_{d,efecctivo} -1\]</span></p>
+<p>Las distribuciones previas para <span class="math inline">\(\boldsymbol{\beta}\)</span> y <span class="math inline">\(\sigma^2_u\)</span></p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+\beta_k &amp;\sim&amp; N(0, 10000)\\
+\sigma^2_u &amp;\sim&amp; IG(0.0001,0.0001)
+\end{eqnarray*}
+\]</span></p>
+</div>
+<div id="modelos-de-área-con-variable-respuesta-binomial." class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> Modelos de área con variable respuesta Binomial.<a href="modelos-de-área.html#modelos-de-área-con-variable-respuesta-binomial." class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El modelo lineal de Fay-Herriot puede ser reemplazado por un modelo mixto lineal generalizado (GLMM). Esto se puede hacer cuando los datos observados <span class="math inline">\(Y_d\)</span> son inherentemente discretos, como cuando son recuentos (no ponderados) de personas u hogares muestreados con ciertas características. Uno de estos modelos supone una distribución binomial para <span class="math inline">\(Y_d\)</span> con probabilidad de éxito <span class="math inline">\(\theta_d\)</span>, y una logística modelo de regresión para <span class="math inline">\(\theta_d\)</span> con errores normales en la escala logit. El modelo resultante es</p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+Y_{d}\mid \theta_{d},n_{d} &amp; \sim &amp; Bin\left(n_{d},\theta_{d}\right)
+\end{eqnarray*}
+\]</span>
+para <span class="math inline">\(d=1,\dots,D\)</span> y</p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+logit\left(\theta_{d}\right)=\log\left(\frac{\theta_{d}}{1-\theta_{d}}\right) &amp; = &amp; \boldsymbol{x}_{d}^{T}\boldsymbol{\beta}+u_{d}
+\end{eqnarray*}
+\]</span>
+donde <span class="math inline">\(u_{d}\sim N\left(0,\sigma_{u}^{2}\right)\)</span> y <span class="math inline">\(n_{d}\)</span> es el
+tamaño de la muestra para el área <span class="math inline">\(d\)</span>.</p>
+<p>El modelo anterior se puede aplicar fácilmente a recuentos de muestras no ponderadas <span class="math inline">\(Y_d\)</span>, pero esto ignora cualquier aspecto complejo del diseño de la encuesta. En muestras complejas donde las <span class="math inline">\(Y_d\)</span> son estimaciones ponderadas, surgen dos problemas. En primer lugar, los posibles valores de
+el <span class="math inline">\(Y_d\)</span> no serán los números enteros <span class="math inline">\(0, 1, \dots , n_d\)</span> para cualquier definición directa de tamaño de muestra <span class="math inline">\(n_d\)</span>. En su lugar, <span class="math inline">\(Y_d\)</span> tomará un valor de un conjunto finito de números desigualmente espaciados determinados por las ponderaciones de la encuesta que se aplican a los casos de muestra en el dominio <span class="math inline">\(d\)</span>. En segundo lugar, la varianza muestral de <span class="math inline">\(Y_d\)</span>
+implícito en la distribución Binomial, es decir, <span class="math inline">\(n_d \times \theta_d (1-\theta_d)\)</span>, será incorrecto. Abordamos estos dos problemas al definir un <strong>tamaño de muestra efectivo</strong> <span class="math inline">\(\tilde{n}_d\)</span>, y un <strong>número de muestra efectivo de éxitos</strong> <span class="math inline">\(\tilde{Y_d}\)</span> determinó mantener: (i) la estimación directa <span class="math inline">\(\hat{\theta}_i\)</span>, de la pobreza y (ii) una estimación de la varianza de muestreo correspondiente,<span class="math inline">\(\widehat{Var}(\hat{\theta}_d)\)</span>.</p>
+<p>Es posible suponer que
+<span class="math display">\[
+\begin{eqnarray*}
+\tilde{n}_{d} &amp; \sim &amp; \frac{\check{\theta}_{d}\left(1-\check{\theta}_{d}\right)}{\widehat{Var}\left(\hat{\theta}_{d}\right)}
+\end{eqnarray*}
+\]</span>
+donde <span class="math inline">\(\check{\theta}_{d}\)</span> es una preliminar perdicción basada en el modelo para la proporción poblacional <span class="math inline">\(\theta_d\)</span> y <span class="math inline">\(\widehat{Var}\left(\hat{\theta}_{d}\right)\)</span> depende de<span class="math inline">\(\check{\theta}_{d}\)</span> a través de una función de varianza generalizada ajustada (FGV). Note que <span class="math inline">\(\tilde{Y}_{d}=\tilde{n}_{d}\times\hat{\theta}_{d}\)</span>.</p>
+<p>Suponga de las distribuciones previas para
+<span class="math inline">\(\boldsymbol{\beta}\)</span> y <span class="math inline">\(\sigma_{u}^{2}\)</span> son dadas por
+<span class="math display">\[
+\begin{eqnarray*}
+\boldsymbol{\beta}  \sim    N\left(0,10000\right)\\
+\sigma_{u}^{2}  \sim    IG\left(0.0001,0.0001\right)
+\end{eqnarray*}
+\]</span></p>
+</div>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="fuentes-de-error-en-la-estimación-del-fies.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/psirusteam/2021ASDA/Mocelo_areas_FIES_FAO.qmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria.pdf", "Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria.epub", "Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria.mobi"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+},
+"tconfig": null
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
