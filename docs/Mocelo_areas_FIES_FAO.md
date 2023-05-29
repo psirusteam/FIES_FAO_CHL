@@ -214,15 +214,16 @@ Luego de recopilar la información proporcionada por FAO, se procedió al ajuste
 Posteriormente, se llevó a cabo un análisis de chequeo predictivo con el fin de seleccionar el modelo más adecuado. Cabe destacar que se realizaron 6500 iteraciones, descartando las primeras 5000 iteraciones como parte del proceso de quemado. Al evaluar el criterio de Rhat, se pudo constatar que todas las cadenas del modelo convergieron satisfactoriamente.  
 
 
-### Resultado para el modelo de área de Fay-Herriot {-}
+### Resultado para el modelo de área de Fay-Herriot. {-}
 
 <img src="Data/RecursosBook/02/1_ppc_normal.jpeg" width="200%" style="display: block; margin: auto;" />
 
 
-### Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno {-}
+### Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno. {-}
 
 <img src="Data/RecursosBook/02/2_ppc_arcosin.jpeg" width="200%" style="display: block; margin: auto;" />
-### Resultado para el modelo de área con variable respuesta Beta {-}
+
+### Resultado para el modelo de área con variable respuesta Beta. {-}
 
 
 <img src="Data/RecursosBook/02/3_ppc_beta.jpeg" width="200%" style="display: block; margin: auto;" />
@@ -232,7 +233,13 @@ Posteriormente, se llevó a cabo un análisis de chequeo predictivo con el fin d
 
 <img src="Data/RecursosBook/02/4_ppc_binomial.jpeg" width="200%" style="display: block; margin: auto;" />
 
-De acuerdo con los resultados obtenidos, se determinó que el modelo de área con variable respuesta binomial presenta un mejor ajuste en comparación con los otros modelos considerados. A partir de este modelo, se procedió a realizar el proceso de benchmarking, el cual se describe a continuación:
+De acuerdo con los resultados obtenidos, se determinó que el modelo de área con variable respuesta binomial presenta un mejor ajuste en comparación con los otros modelos considerados. 
+
+
+<img src="Data/RecursosBook/02/5_comparando.jpeg" width="200%" style="display: block; margin: auto;" />
+
+
+A partir de este modelo, se procedió a realizar el proceso de benchmarking, el cual se describe a continuación:
 
 ## Proceso de Benchmark 
 
@@ -244,7 +251,7 @@ estimacionesPre <- readRDS("Data/estimacionesPre.rds") %>%
   transmute(dam2 = haven::as_factor(comuna, levels = "values"),
             dam2 = str_pad(width = 5, dam2, pad = "0"),
             dam = str_sub(dam2,1,2),
-            theta_pred)
+            theta_pred,thetaSyn)
 ```
 
 
@@ -379,9 +386,7 @@ estimacionesBench <- estimacionesPre %>%
   left_join(R_dam2, by = c("dam")) %>%
   mutate(theta_pred_RBench = R_dam_RB * theta_pred) %>%
   left_join(pesos) %>% 
-  select(dam, dam2, W_i, theta_pred, theta_pred_RBench)  
-
-tba(estimacionesBench %>% slice(1:10))
+   select(dam, dam2, W_i, theta_pred, thetaSyn, theta_pred_RBench)  
 ```
 
 6. Validación: Estimación FH con Benchmark
@@ -409,8 +414,9 @@ IC_dir <- readRDS("Data/FIES_region.rds") %>%
 temp <- estimacionesBench %>% left_join( estimacionesPre ) %>% 
   group_by(dam) %>% 
   summarise(
-            thetaFH = sum(W_i * theta_pred),
-            theta_FH_ench = sum(W_i * theta_pred_RBench)
+            "FIES Modelo" = sum(W_i * theta_pred),
+            "FIES Modelo Syn" = sum(W_i * thetaSyn),
+            "FIES Modelo Bench" = sum(W_i * theta_pred_RBench)
   ) %>%   
   left_join(directoDam, by = "dam")  %>% 
   mutate(id = 1:n())
@@ -429,7 +435,7 @@ p_temp <- ggplot(data = temp, aes(x = id, y = Estimacion, shape = Metodo)) +
 ```
 
 
-<img src="Data/RecursosBook/03/1_validacion_Bench.jpeg" width="1050" />
+<img src="Data/RecursosBook/03/1_validacion_Bench.jpeg" width="2197" />
 
 ## Mapa con la estimación de la Escala de Experiencia de Inseguridad Alimentaria 
 

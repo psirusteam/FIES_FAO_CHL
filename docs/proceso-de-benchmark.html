@@ -23,7 +23,7 @@
 <meta name="author" content="Andrés Gutiérrez, Stalyn Guerrero" />
 
 
-<meta name="date" content="2023-05-26" />
+<meta name="date" content="2023-05-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -157,8 +157,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>2</b> Estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
 <ul>
-<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot"><i class="fa fa-check"></i>Resultado para el modelo de área de Fay-Herriot</a></li>
-<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot-con-tranformación-arcoseno"><i class="fa fa-check"></i>Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot."><i class="fa fa-check"></i>Resultado para el modelo de área de Fay-Herriot.</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot-con-tranformación-arcoseno."><i class="fa fa-check"></i>Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno.</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-beta."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Beta.</a></li>
 <li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-binomial."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Binomial.</a></li>
 <li class="chapter" data-level="2.1" data-path="proceso-de-benchmark.html"><a href="proceso-de-benchmark.html"><i class="fa fa-check"></i><b>2.1</b> Proceso de Benchmark</a></li>
 <li class="chapter" data-level="2.2" data-path="validación-de-los-resultados..html"><a href="validación-de-los-resultados..html"><i class="fa fa-check"></i><b>2.2</b> Validación de los resultados.</a></li>
@@ -196,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="proceso-de-benchmark.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">dam2 =</span> haven<span class="sc">::</span><span class="fu">as_factor</span>(comuna, <span class="at">levels =</span> <span class="st">&quot;values&quot;</span>),</span>
 <span id="cb1-3"><a href="proceso-de-benchmark.html#cb1-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">dam2 =</span> <span class="fu">str_pad</span>(<span class="at">width =</span> <span class="dv">5</span>, dam2, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>),</span>
 <span id="cb1-4"><a href="proceso-de-benchmark.html#cb1-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">dam =</span> <span class="fu">str_sub</span>(dam2,<span class="dv">1</span>,<span class="dv">2</span>),</span>
-<span id="cb1-5"><a href="proceso-de-benchmark.html#cb1-5" aria-hidden="true" tabindex="-1"></a>            theta_pred)</span></code></pre></div>
+<span id="cb1-5"><a href="proceso-de-benchmark.html#cb1-5" aria-hidden="true" tabindex="-1"></a>            theta_pred,thetaSyn)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Del censo extraer el total de personas por Región</li>
 </ol>
@@ -393,9 +394,7 @@ dam_hh
 <span id="cb7-2"><a href="proceso-de-benchmark.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(R_dam2, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;dam&quot;</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="proceso-de-benchmark.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">theta_pred_RBench =</span> R_dam_RB <span class="sc">*</span> theta_pred) <span class="sc">%&gt;%</span></span>
 <span id="cb7-4"><a href="proceso-de-benchmark.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(pesos) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-5"><a href="proceso-de-benchmark.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(dam, dam2, W_i, theta_pred, theta_pred_RBench)  </span>
-<span id="cb7-6"><a href="proceso-de-benchmark.html#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="proceso-de-benchmark.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tba</span>(estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
+<span id="cb7-5"><a href="proceso-de-benchmark.html#cb7-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(dam, dam2, W_i, theta_pred, thetaSyn, theta_pred_RBench)  </span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Validación: Estimación FH con Benchmark</li>
 </ol>
