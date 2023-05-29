@@ -98,7 +98,7 @@ model_FH_Binomial  <- stan(
 )
 
 saveRDS(object = model_FH_Binomial,
-        file = "Data/model_FH_Binomial.rds")
+        file = "Data/model_FH_Binomial_thetaSyn.rds")
 
 
 
@@ -128,16 +128,49 @@ posterior_sigma2_u <- as.array(model_FH_Binomial, pars = "sigma2_u")
 
 theta_FH <-   summary(model_FH_Binomial,pars =  "theta")$summary %>%
   data.frame()
+
+theta_Syn <-   summary(model_FH_Binomial,pars =  "thetaSyn")$summary %>%
+  data.frame()
+
+
 data_dir %<>% mutate(theta_pred  = theta_FH$mean, 
                      theta_pred_EE = theta_FH$sd,
-                     Cv_pred = theta_pred_EE/theta_pred )
+                     Cv_pred = theta_pred_EE/theta_pred,
+                     thetaSyn  = theta_Syn$mean)
+
+
+# Estimación con la ecuación ponderada de FH Vs estimación sintética
+p12 <- ggplot(data_dir, aes(x = thetaSyn, y = theta_pred)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) + labs(y = "Predicción de modelo", x = "Estimación sintética") 
+# Estimación con la ecuación ponderada de FH Vs estimación directa
+p21 <- ggplot(data_dir, aes(x = ModerateSevere, y = theta_pred)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) + labs(y = "Predicción de modelo", x = "Estimación directa") 
+# Estimación directa Vs estimación sintética
+p22 <- ggplot(data_dir, aes(x = ModerateSevere, y = thetaSyn)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) + labs(y = "Estimación sintética", x = "Estimación directa") 
+p_temp = (p12+p21+p22)
+
+
+ggsave(plot = p_temp,
+       filename =  "Data/RecursosBook/02/5_comparando.jpeg", 
+       scale = 2)
+
+
 
 theta_FH_pred <- summary(model_FH_Binomial,pars =  "thetaLP")$summary %>%
   data.frame()
+
 data_syn <- data_syn %>% 
   mutate(theta_pred = theta_FH_pred$mean,
          theta_pred_EE = theta_FH_pred$sd,
-         Cv_pred = theta_pred_EE/theta_pred)
+         Cv_pred = theta_pred_EE/theta_pred,
+         thetaSyn = theta_pred)
 
 estimacionesPre <- bind_rows(data_dir, data_syn) 
 

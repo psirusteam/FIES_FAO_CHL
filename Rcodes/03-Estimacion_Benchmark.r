@@ -31,7 +31,7 @@ estimacionesPre <- readRDS("Data/estimacionesPre.rds") %>%
   transmute(dam2 = haven::as_factor(comuna, levels = "values"),
             dam2 = str_pad(width = 5, dam2, pad = "0"),
             dam = str_sub(dam2,1,2),
-            theta_pred)
+            theta_pred,thetaSyn)
 
 n_distinct(estimacionesPre$dam)
 
@@ -76,7 +76,7 @@ estimacionesBench <- estimacionesPre %>%
   left_join(R_dam2, by = c("dam")) %>%
   mutate(theta_pred_RBench = R_dam_RB * theta_pred) %>%
   left_join(pesos) %>% 
-  select(dam, dam2, W_i, theta_pred, theta_pred_RBench)  
+  select(dam, dam2, W_i, theta_pred, thetaSyn, theta_pred_RBench)  
 
 # 6. Validación: Estimación FH con Benchmark
 
@@ -103,8 +103,9 @@ IC_dir <- readRDS("Data/FIES_region.rds") %>%
 temp <- estimacionesBench %>% left_join( estimacionesPre ) %>% 
   group_by(dam) %>% 
   summarise(
-            "FIES FH" = sum(W_i * theta_pred),
-            "FIES FH Bench" = sum(W_i * theta_pred_RBench)
+            "FIES Modelo" = sum(W_i * theta_pred),
+            "FIES Modelo Syn" = sum(W_i * thetaSyn),
+            "FIES Modelo Bench" = sum(W_i * theta_pred_RBench)
   ) %>%   
   left_join(directoDam, by = "dam")  %>% 
   mutate(id = 1:n())
@@ -116,7 +117,7 @@ p_temp <- ggplot(data = temp, aes(x = id, y = Estimacion, shape = Metodo)) +
   geom_point(aes(color = Metodo), size = 2) +
   geom_line(aes(y = Li), linetype  = 2) +
   geom_line(aes(y = Ls),  linetype  = 2) +
-  theme_bw(10) + 
+  theme_bw(20) + 
   scale_x_continuous(breaks = temp$id,
                      labels =  temp$dam) +
   labs(y = "", x = "")
@@ -124,7 +125,7 @@ p_temp <- ggplot(data = temp, aes(x = id, y = Estimacion, shape = Metodo)) +
  
 ggsave(plot = p_temp,
        filename =  "Data/RecursosBook/03/1_validacion_Bench.jpeg", 
-       scale = 2)
+       scale = 1.5)
 
 ## Resultados del Benchmark
 estimacionesPre <- readRDS("Data/estimacionesPre.rds") %>%

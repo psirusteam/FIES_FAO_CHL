@@ -435,7 +435,7 @@ p_temp <- ggplot(data = temp, aes(x = id, y = Estimacion, shape = Metodo)) +
 ```
 
 
-<img src="Data/RecursosBook/03/1_validacion_Bench.jpeg" width="2197" />
+<img src="Data/RecursosBook/03/1_validacion_Bench.jpeg" width="1648" />
 
 ## Mapa con la estimación de la Escala de Experiencia de Inseguridad Alimentaria 
 

@@ -36,6 +36,11 @@ generated quantities {
   real ypred[N2];                    // vector de longitud n
   vector[N2] thetaLP;                   // vector de longitud n
   vector[N2] LP_pred;                    // vector de longitud n
+  vector[N1] LP_Syn;                    // vector de longitud n
+  vector[N1] thetaSyn;                    // vector de longitud n
+  
+  LP_Syn =  X * beta;
+  thetaSyn = inv_logit(LP_Syn);
   LP_pred =  Xs * beta;
   thetaLP = inv_logit(LP_pred);
 
