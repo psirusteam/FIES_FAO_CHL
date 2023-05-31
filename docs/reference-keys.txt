@@ -1,0 +1,13 @@
+modelo-de-área-para-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria
+modelo-de-rash
+fuentes-de-error-en-la-estimación-del-fies
+modelos-de-área
+modelo-de-área-de-fay-herriot
+modelo-de-área-de-fay-herriot-con-tranformación-arcoseno.
+modelos-de-área-con-variable-respuesta-beta.
+modelos-de-área-con-variable-respuesta-binomial.
+estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria
+proceso-de-benchmark
+validación-de-los-resultados.
+mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria
+tabla-con-las-estimaciones-por-comuna.
