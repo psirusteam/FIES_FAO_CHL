@@ -23,7 +23,7 @@
 <meta name="author" content="Andrés Gutiérrez, Stalyn Guerrero" />
 
 
-<meta name="date" content="2023-05-31" />
+<meta name="date" content="2023-08-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -193,19 +193,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol style="list-style-type: decimal">
 <li>Leer estimaciones del modelo</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="proceso-de-benchmark.html#cb1-1" aria-hidden="true" tabindex="-1"></a>estimacionesPre <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/estimacionesPre.rds&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="proceso-de-benchmark.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">dam2 =</span> haven<span class="sc">::</span><span class="fu">as_factor</span>(comuna, <span class="at">levels =</span> <span class="st">&quot;values&quot;</span>),</span>
-<span id="cb1-3"><a href="proceso-de-benchmark.html#cb1-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">dam2 =</span> <span class="fu">str_pad</span>(<span class="at">width =</span> <span class="dv">5</span>, dam2, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>),</span>
-<span id="cb1-4"><a href="proceso-de-benchmark.html#cb1-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">dam =</span> <span class="fu">str_sub</span>(dam2,<span class="dv">1</span>,<span class="dv">2</span>),</span>
-<span id="cb1-5"><a href="proceso-de-benchmark.html#cb1-5" aria-hidden="true" tabindex="-1"></a>            theta_pred,thetaSyn)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="proceso-de-benchmark.html#cb1-1" tabindex="-1"></a>estimacionesPre <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/estimacionesPre.rds&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="proceso-de-benchmark.html#cb1-2" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">dam2 =</span> haven<span class="sc">::</span><span class="fu">as_factor</span>(comuna, <span class="at">levels =</span> <span class="st">&quot;values&quot;</span>),</span>
+<span id="cb1-3"><a href="proceso-de-benchmark.html#cb1-3" tabindex="-1"></a>            <span class="at">dam2 =</span> <span class="fu">str_pad</span>(<span class="at">width =</span> <span class="dv">5</span>, dam2, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>),</span>
+<span id="cb1-4"><a href="proceso-de-benchmark.html#cb1-4" tabindex="-1"></a>            <span class="at">dam =</span> <span class="fu">str_sub</span>(dam2,<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb1-5"><a href="proceso-de-benchmark.html#cb1-5" tabindex="-1"></a>            theta_pred,thetaSyn)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Del censo extraer el total de personas por Región</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="proceso-de-benchmark.html#cb2-1" aria-hidden="true" tabindex="-1"></a>total_hh <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;Data/Total_Hogares.rds&quot;</span>)</span>
-<span id="cb2-2"><a href="proceso-de-benchmark.html#cb2-2" aria-hidden="true" tabindex="-1"></a>N_hh <span class="ot">&lt;-</span> total_hh <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="at">dam =</span> <span class="fu">str_sub</span>(dam2, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="proceso-de-benchmark.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dam_hh =</span> <span class="fu">sum</span>(NN_Hogar)) </span>
-<span id="cb2-4"><a href="proceso-de-benchmark.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="proceso-de-benchmark.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tba</span>(N_hh <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="proceso-de-benchmark.html#cb2-1" tabindex="-1"></a>total_hh <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;Data/Total_Hogares.rds&quot;</span>)</span>
+<span id="cb2-2"><a href="proceso-de-benchmark.html#cb2-2" tabindex="-1"></a>N_hh <span class="ot">&lt;-</span> total_hh <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="at">dam =</span> <span class="fu">str_sub</span>(dam2, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="proceso-de-benchmark.html#cb2-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dam_hh =</span> <span class="fu">sum</span>(NN_Hogar)) </span>
+<span id="cb2-4"><a href="proceso-de-benchmark.html#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="proceso-de-benchmark.html#cb2-5" tabindex="-1"></a><span class="fu">tba</span>(N_hh <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
 <table class="table table-striped lightable-classic" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: Arial Narrow; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -369,39 +369,39 @@ dam_hh
 <ol start="3" style="list-style-type: decimal">
 <li>Obtener las estimaciones directa por region o el nivel de agregación en el cual la encuesta es representativa.</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="proceso-de-benchmark.html#cb3-1" aria-hidden="true" tabindex="-1"></a>directoDam <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/FIES_region.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="proceso-de-benchmark.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>( dam, <span class="at">ModerateSevere =</span> FIES)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="proceso-de-benchmark.html#cb3-1" tabindex="-1"></a>directoDam <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/FIES_region.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="proceso-de-benchmark.html#cb3-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>( dam, <span class="at">ModerateSevere =</span> FIES)</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Realizar el consolidando información obtenida en <em>1</em> y <em>2</em>.</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="proceso-de-benchmark.html#cb4-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> estimacionesPre <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="proceso-de-benchmark.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(N_hh ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="proceso-de-benchmark.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(directoDam )</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="proceso-de-benchmark.html#cb4-1" tabindex="-1"></a>temp <span class="ot">&lt;-</span> estimacionesPre <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="proceso-de-benchmark.html#cb4-2" tabindex="-1"></a>  <span class="fu">inner_join</span>(N_hh ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="proceso-de-benchmark.html#cb4-3" tabindex="-1"></a>  <span class="fu">inner_join</span>(directoDam )</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Con la información organizada realizar el calculo de los pesos para el Benchmark</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="proceso-de-benchmark.html#cb5-1" aria-hidden="true" tabindex="-1"></a>R_dam2 <span class="ot">&lt;-</span> temp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="proceso-de-benchmark.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">R_dam_RB =</span> <span class="fu">unique</span>(ModerateSevere) <span class="sc">/</span> <span class="fu">sum</span>((NN_Hogar  <span class="sc">/</span> dam_hh) <span class="sc">*</span> theta_pred)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="proceso-de-benchmark.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="proceso-de-benchmark.html#cb5-1" tabindex="-1"></a>R_dam2 <span class="ot">&lt;-</span> temp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="proceso-de-benchmark.html#cb5-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">R_dam_RB =</span> <span class="fu">unique</span>(ModerateSevere) <span class="sc">/</span> <span class="fu">sum</span>((NN_Hogar  <span class="sc">/</span> dam_hh) <span class="sc">*</span> theta_pred)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="proceso-de-benchmark.html#cb5-3" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>)</span></code></pre></div>
 <p>calculando los pesos para cada comuna</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="proceso-de-benchmark.html#cb6-1" aria-hidden="true" tabindex="-1"></a>pesos <span class="ot">&lt;-</span> temp <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="proceso-de-benchmark.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">W_i =</span> NN_Hogar <span class="sc">/</span> dam_hh) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="proceso-de-benchmark.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(dam2, W_i)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="proceso-de-benchmark.html#cb6-1" tabindex="-1"></a>pesos <span class="ot">&lt;-</span> temp <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="proceso-de-benchmark.html#cb6-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">W_i =</span> NN_Hogar <span class="sc">/</span> dam_hh) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="proceso-de-benchmark.html#cb6-3" tabindex="-1"></a>  <span class="fu">select</span>(dam2, W_i)</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Realizar la estimación FH Benchmark</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="proceso-de-benchmark.html#cb7-1" aria-hidden="true" tabindex="-1"></a>estimacionesBench <span class="ot">&lt;-</span> estimacionesPre <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="proceso-de-benchmark.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(R_dam2, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;dam&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="proceso-de-benchmark.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">theta_pred_RBench =</span> R_dam_RB <span class="sc">*</span> theta_pred) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="proceso-de-benchmark.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(pesos) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-5"><a href="proceso-de-benchmark.html#cb7-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(dam, dam2, W_i, theta_pred, thetaSyn, theta_pred_RBench)  </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="proceso-de-benchmark.html#cb7-1" tabindex="-1"></a>estimacionesBench <span class="ot">&lt;-</span> estimacionesPre <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="proceso-de-benchmark.html#cb7-2" tabindex="-1"></a>  <span class="fu">left_join</span>(R_dam2, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;dam&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="proceso-de-benchmark.html#cb7-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">theta_pred_RBench =</span> R_dam_RB <span class="sc">*</span> theta_pred) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="proceso-de-benchmark.html#cb7-4" tabindex="-1"></a>  <span class="fu">left_join</span>(pesos) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-5"><a href="proceso-de-benchmark.html#cb7-5" tabindex="-1"></a>   <span class="fu">select</span>(dam, dam2, W_i, theta_pred, thetaSyn, theta_pred_RBench)  </span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Validación: Estimación FH con Benchmark</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="proceso-de-benchmark.html#cb8-1" aria-hidden="true" tabindex="-1"></a>estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="proceso-de-benchmark.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">theta_reg_RB =</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred_RBench)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="proceso-de-benchmark.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="proceso-de-benchmark.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="proceso-de-benchmark.html#cb8-1" tabindex="-1"></a>estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="proceso-de-benchmark.html#cb8-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">theta_reg_RB =</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred_RBench)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="proceso-de-benchmark.html#cb8-3" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="proceso-de-benchmark.html#cb8-4" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
 </div>
             </section>
 
