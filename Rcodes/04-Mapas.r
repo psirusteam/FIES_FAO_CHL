@@ -47,7 +47,7 @@ Mapa_lp
 
 tmap_save(
   Mapa_lp,
-  "Data/RecursosBook/04/CHL_FIES.jpeg",
+  "Data/RecursosBook/04/CHL_FIES2.jpeg",
   width = 3000,
   height = 2000,
   asp = 0

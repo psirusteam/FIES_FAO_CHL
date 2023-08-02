@@ -19,7 +19,7 @@ select <- dplyr::select
 id_dominio <- "comuna"
 
 ## Lectura de indicadores estimados en el paso anterior. 
-indicador_dom <- readRDS('Data/dir_estim_comuna_CASEN_2020_hh2.rds')
+indicador_dom <- readRDS('Data/dir_estim_comuna_CASEN_2020_hh.rds')
 
 # Filtrar valores para obtener solo aquellos que puedan 
 
@@ -112,6 +112,10 @@ base_sae <- left_join(indicador_dom,
 
 #----------Transformación de la data para consumo final-------------------
 ##
+table(is.na(base_FH$hat_var))
+table(is.na(base_FH$hat_var), is.na(base_FH$var.tot))
+
+
 base_FH <- base_sae %>%
   mutate(
     deff = ifelse(is.nan(deff), 1, deff),

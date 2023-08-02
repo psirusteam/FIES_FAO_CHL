@@ -25,7 +25,18 @@ select <- dplyr::select
 
 ## Lectura de base de datos
 dam2 <- "comuna"
-base_FH <- readRDS("Data/data_SAE_complete_final.rds")  
+
+base_FH_antes <- readRDS("Data/data_v1/data_SAE_complete_final.rds") %>% 
+  select(comuna:var.tot.smooth.corr) %>% 
+  mutate(comuna = str_pad(haven::as_factor( comuna, levels = "values"), 
+                          width = 5, pad = "0"))
+
+base_cov_new <- readRDS("Data/data_SAE_complete_final_arcsin.rds") %>% 
+  select(comuna,accesibilidad_hospitales:region) %>% 
+  mutate(comuna = str_pad(comuna, width = 5, pad = "0"))
+
+base_FH <- inner_join(base_FH_antes, base_cov_new)
+
 
 ## Lectura de covariables 
 
@@ -39,19 +50,11 @@ data_syn <-
   base_FH %>% anti_join(data_dir %>% select(all_of(dam2)))
 
 # names(data_syn)
+colnames(base_cov_new)
 
-formula_mod  <- formula(~ prop_b50median_afc_2020 +                 
-                          prop_fonasa_a_2019 +                      
-                          log_ing_municipales_permanentes_pc_2018 + 
-                          prop_fonasa_b_2019 +                      
-                          prop_fonasa_c_2019 +                      
-                          prop_obeso_sobrepeso_menores_2018_w +     
-                          prop_red_publica_2017 +                   
-                          prop_ism_afc_2020 +                       
-                          promedio_simce_hist_8b_2019 +             
-                          prop_camion_aljibe_2017 +                 
-                          prop_obeso_sobrepeso_menores_2018 +       
-                          prop_rio_vertiente_estero_canal_2017  )
+formula_mod <- formula(paste("~",paste(colnames(base_cov_new)[-1]),
+                             collapse = " + "))
+
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
 
@@ -78,8 +81,8 @@ model_FH_normal <- stan(
   file = fit_FH_normal,  
   data = sample_data,   
   verbose = FALSE,
-  warmup = 5000,         
-  iter = 6500,            
+  warmup = 2000,         
+  iter = 3000,            
   cores = 4              
 )
 
@@ -87,8 +90,6 @@ saveRDS(object = model_FH_normal,
         file = "Data/model_FH_normal.rds")
 
 model_FH_normal <- readRDS(file = "Data/model_FH_normal.rds")
-
-
 
 paramtros <- summary(model_FH_normal)$summary %>% data.frame()
 
@@ -152,4 +153,38 @@ p22 <- ggplot(data_dir, aes(x = thetadir, y = thetaSyn)) +
   theme_bw(10) 
 
 (p11+p12)/(p21+p22)
+
+
+arcsin_freq <-
+  read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
+            sheet = 2) %>%
+  transmute(Domain,
+            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
+
+temp <-
+  data_dir %>%
+  select(comuna, ModerateSevere, theta_pred) %>%
+  inner_join(arcsin_freq, by = dam2)
+
+p_temp2 <- p_temp + 
+  geom_density(data = temp, aes(x = FH),
+               colour = "red" , size = 1.5)
+
+ggsave(plot = p_temp2,
+       filename =  "Data/RecursosBook/02/1_ppc_normal.jpeg", 
+       scale = 3)
+
+
+p11 <- ggplot(temp, aes(x = ModerateSevere, y = Direct)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) 
+
+# Estimación con la ecuación ponderada de FH Vs estimación sintética
+p12 <- ggplot(temp, aes(x = theta_pred, y = FH)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) 
+
+
 

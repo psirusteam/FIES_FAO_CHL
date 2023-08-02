@@ -25,7 +25,6 @@ select <- dplyr::select
 
 ## Lectura de base de datos
 dam2 <- "comuna"
-
 base_FH_antes <- readRDS("Data/data_v1/data_SAE_complete_final.rds") %>% 
   select(comuna:var.tot.smooth.corr) %>% 
   mutate(comuna = str_pad(haven::as_factor( comuna, levels = "values"), 
@@ -46,8 +45,11 @@ base_FH <- inner_join(
 ) %>% mutate(
   deff_FGV = var.tot.smooth.corr / (var.tot / deff),
   n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
+  T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
   n_effec = n_eff_FGV,              ## n efectivo
+  varhat = 1/(4*n_effec)            ## varianza para zd  
 )
+
 ## Lectura de covariables 
 
 table(is.na(base_FH$ModerateSevere))
@@ -70,89 +72,82 @@ Xdat <- model.matrix(formula_mod, data = data_dir)
 ## Dominios no observados
 Xs <- model.matrix(formula_mod, data = data_syn)
 
+n_effec = ceiling(data_dir$n_eff_FGV)
+y_effect  = ceiling((data_dir$ModerateSevere)*n_effec)
+
 sample_data <- list(
   N1 = nrow(Xdat),   # Observados.
   N2 = nrow(Xs),   # NO Observados.
   p  = ncol(Xdat),       # Número de regresores.
   X  = as.matrix(Xdat),  # Covariables Observados.
   Xs = as.matrix(Xs),    # Covariables NO Observados
-  y  = as.numeric(data_dir$ModerateSevere),
-  phi = data_dir$n_eff_FGV - 1 
+  n_effec = n_effec,
+  y_effect  = y_effect          # Estimación directa. 
 )
 
-fit_FH_beta_logitic   <- "Data/modelosStan/16FH_beta_logitc.stan"
+fit_FH_binomial    <- "Data/modelosStan/14FH_binomial2.stan"
 
 options(mc.cores = parallel::detectCores())
 rstan::rstan_options(auto_write = TRUE) 
 
-model_FH_beta_logitic  <- stan(
-  file = fit_FH_beta_logitic ,  
+model_FH_Binomial  <- stan(
+  file = fit_FH_binomial  ,  
   data = sample_data,   
   verbose = FALSE,
-  warmup = 3000,         
-  iter = 4000,            
+  warmup = 5000,         
+  iter = 6500,            
   cores = 4              
 )
 
-saveRDS(object = model_FH_beta_logitic,
-        file = "Data/model_FH_beta_logitic.rds")
+saveRDS(object = model_FH_Binomial,
+        file = "Data/model_FH_Binomial2.rds")
 
-paramtros <- summary(model_FH_beta_logitic)$summary %>% data.frame()
 
-mcmc_rhat(paramtros$Rhat)
+saveRDS(bind_rows(data_dir, data_syn) %>%
+          select(all_of(dam2), id_Orden),
+        file = "Data/id_Orden.rds")
 
-y_pred_B <- as.array(model_FH_beta_logitic, pars = "theta") %>% 
+
+paramtros <- summary(model_FH_Binomial)$summary %>% data.frame()
+
+p_temp <- mcmc_rhat(paramtros$Rhat)
+
+ggsave(plot = p_temp,
+       filename =  "Data/RecursosBook/02/4_rhat_binomial.jpeg", 
+       scale = 3)
+
+
+y_pred_B <- as.array(model_FH_Binomial, pars = "theta") %>% 
   as_draws_matrix()
-rowsrandom <- sample(nrow(y_pred_B), 100)
+rowsrandom <- sample(nrow(y_pred_B), 500)
 y_pred2 <- y_pred_B[rowsrandom, ]
 p_temp <- ppc_dens_overlay(y = as.numeric(data_dir$ModerateSevere), y_pred2)
 
 ggsave(plot = p_temp,
-       filename =  "Data/RecursosBook/02/3_ppc_beta.jpeg", 
+       filename =  "Data/RecursosBook/02/4_ppc_binomial.jpeg", 
        scale = 3)
 
-posterior_sigma2_u <- as.array(model_FH_beta_logitic, pars = "sigma2_u")
+posterior_sigma2_u <- as.array(model_FH_Binomial, pars = "sigma2_u")
 (mcmc_dens_chains(posterior_sigma2_u) +
     mcmc_areas(posterior_sigma2_u) ) / 
   mcmc_trace(posterior_sigma2_u)
 
-theta_FH <-   summary(model_FH_beta_logitic,pars =  "theta")$summary %>%
+theta_FH <-   summary(model_FH_Binomial,pars =  "theta")$summary %>%
   data.frame()
-data_dir %<>% mutate(pred_beta_log = theta_FH$mean, 
-                     pred_beta_log_EE = theta_FH$sd,
-                     Cv_pred = pred_beta_log_EE/pred_beta_log)
+data_dir %<>% mutate(theta_pred  = theta_FH$mean, 
+                     theta_pred_EE = theta_FH$sd,
+                     Cv_pred = theta_pred_EE/theta_pred )
 
-arcsin_freq <-
-  readxl::read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
-            sheet = 2) %>%
-  transmute(Domain,
-            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
+theta_FH_pred <- summary(model_FH_Binomial,pars =  "thetaLP")$summary %>%
+  data.frame()
+data_syn <- data_syn %>% 
+  mutate(theta_pred = theta_FH_pred$mean,
+         theta_pred_EE = theta_FH_pred$sd,
+         Cv_pred = theta_pred_EE/theta_pred)
 
-temp <-
-  data_dir %>% 
-  select(comuna, ModerateSevere, pred_beta_log) %>%
-  inner_join(arcsin_freq, by = dam2)
+estimacionesPre <- bind_rows(data_dir, data_syn) 
 
-p_temp2 <- p_temp + 
-  geom_density(data = temp, aes(x = FH),
-               colour = "red" , size = 1.5)
-
-ggsave(plot = p_temp2,
-       filename =  "Data/RecursosBook/02/3_ppc_beta.jpeg", 
-       scale = 3)
-
-
-p11 <- ggplot(temp, aes(x = ModerateSevere, y = Direct)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) 
-
-# Estimación con la ecuación ponderada de FH Vs estimación sintética
-p12 <- ggplot(temp, aes(x = pred_beta_log, y = FH)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) 
-
+saveRDS(estimacionesPre, "Data/estimacionesPre.rds")
 
 
 

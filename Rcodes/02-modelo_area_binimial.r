@@ -25,19 +25,29 @@ select <- dplyr::select
 
 ## Lectura de base de datos
 dam2 <- "comuna"
-base_FH <- readRDS("Data/data_SAE_complete_final.rds")  
-dir_estim <- readRDS("Data/dir_estim_comuna_CASEN_2020_hh.rds") %>% 
+base_FH_antes <- readRDS("Data/data_v1/data_SAE_complete_final.rds") %>% 
+  select(comuna:var.tot.smooth.corr) %>% 
+  mutate(comuna = str_pad(haven::as_factor( comuna, levels = "values"), 
+                          width = 5, pad = "0"))
+
+base_cov_new <- readRDS("Data/data_SAE_complete_final_arcsin.rds") %>% 
+  select(comuna,accesibilidad_hospitales:region) %>% 
+  mutate(comuna = str_pad(comuna, width = 5, pad = "0"))
+
+base_FH <- inner_join(base_FH_antes, base_cov_new)
+
+dir_estim <- readRDS("Data/data_v1/dir_estim_comuna_CASEN_2020_hh.rds") %>% 
   transmute(
-    comuna, n, deff)
+    comuna = str_pad(comuna, width = 5, pad = "0"), n, deff)
 
 base_FH <- inner_join(
   base_FH, dir_estim, by = dam2
 ) %>% mutate(
-    deff_FGV = var.tot.smooth.corr / (var.tot / deff),
-    n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
-    n_effec = n_eff_FGV,              ## n efectivo
-   
-  )
+  deff_FGV = var.tot.smooth.corr / (var.tot / deff),
+  n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
+  n_effec = n_eff_FGV,              ## n efectivo
+)
+
 
 ## Lectura de covariables 
 
@@ -52,18 +62,11 @@ data_syn <-
 
 # names(data_syn)
 
-formula_mod  <- formula(~ prop_b50median_afc_2020 +                 
-                          prop_fonasa_a_2019 +                      
-                          log_ing_municipales_permanentes_pc_2018 + 
-                          prop_fonasa_b_2019 +                      
-                          prop_fonasa_c_2019 +                      
-                          prop_obeso_sobrepeso_menores_2018_w +     
-                          prop_red_publica_2017 +                   
-                          prop_ism_afc_2020 +                       
-                          promedio_simce_hist_8b_2019 +             
-                          prop_camion_aljibe_2017 +                 
-                          prop_obeso_sobrepeso_menores_2018 +       
-                          prop_rio_vertiente_estero_canal_2017  )
+colnames(base_cov_new)## Tomado del script main_V1.R
+
+formula_mod <- formula(paste("~",paste(colnames(base_cov_new)[-1]),
+                             collapse = " + "))
+
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
 
@@ -92,8 +95,8 @@ model_FH_Binomial  <- stan(
   file = fit_FH_binomial  ,  
   data = sample_data,   
   verbose = FALSE,
-  warmup = 5000,         
-  iter = 6500,            
+  warmup = 2000,         
+  iter = 3000,            
   cores = 4              
 )
 
@@ -109,7 +112,6 @@ p_temp <- mcmc_rhat(paramtros$Rhat)
 ggsave(plot = p_temp,
        filename =  "Data/RecursosBook/02/4_rhat_binomial.jpeg", 
        scale = 3)
-
 
 y_pred_B <- as.array(model_FH_Binomial, pars = "theta") %>% 
   as_draws_matrix()
@@ -175,6 +177,40 @@ data_syn <- data_syn %>%
 estimacionesPre <- bind_rows(data_dir, data_syn) 
 
 saveRDS(estimacionesPre, "Data/estimacionesPre.rds")
+
+arcsin_freq <-
+  readxl::read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
+                    sheet = 2) %>%
+  transmute(Domain,
+            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
+
+temp <-
+  data_dir %>% 
+  select(comuna, ModerateSevere, theta_pred) %>%
+  inner_join(arcsin_freq, by = dam2)
+
+p_temp <-
+  ppc_dens_overlay(y = as.numeric(data_dir$ModerateSevere), y_pred2)
+
+p_temp2 <- p_temp + 
+  geom_density(data = temp, aes(x = FH),
+               colour = "red" , linewidth = 1.5)
+
+ggsave(plot = p_temp2,
+       filename =  "Data/RecursosBook/02/4_ppc_binomial.jpeg", 
+       scale = 3)
+
+
+p11 <- ggplot(temp, aes(x = ModerateSevere, y = Direct)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) 
+
+# Estimación con la ecuación ponderada de FH Vs estimación sintética
+p12 <- ggplot(temp, aes(x = theta_pred, y = FH)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) 
 
 
 

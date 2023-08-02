@@ -25,20 +25,31 @@ select <- dplyr::select
 
 ## Lectura de base de datos
 dam2 <- "comuna"
-base_FH <- readRDS("Data/data_SAE_complete_final.rds")  
-dir_estim <- readRDS("Data/dir_estim_comuna_CASEN_2020_hh.rds") %>% 
+
+base_FH_antes <- readRDS("Data/data_v1/data_SAE_complete_final.rds") %>% 
+  select(comuna:var.tot.smooth.corr) %>% 
+  mutate(comuna = str_pad(haven::as_factor( comuna, levels = "values"), 
+                          width = 5, pad = "0"))
+
+base_cov_new <- readRDS("Data/data_SAE_complete_final_arcsin.rds") %>% 
+  select(comuna,accesibilidad_hospitales:region) %>% 
+  mutate(comuna = str_pad(comuna, width = 5, pad = "0"))
+
+base_FH <- inner_join(base_FH_antes, base_cov_new)
+
+dir_estim <- readRDS("Data/data_v1/dir_estim_comuna_CASEN_2020_hh.rds") %>% 
   transmute(
-    comuna, n, deff)
+    comuna = str_pad(comuna, width = 5, pad = "0"), n, deff)
 
 base_FH <- inner_join(
   base_FH, dir_estim, by = dam2
 ) %>% mutate(
-    deff_FGV = var.tot.smooth.corr / (var.tot / deff),
-    n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
-    T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
-    n_effec = n_eff_FGV,              ## n efectivo
-    varhat = 1/(4*n_effec)            ## varianza para zd  
-  )
+  deff_FGV = var.tot.smooth.corr / (var.tot / deff),
+  n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
+  T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
+  n_effec = n_eff_FGV,              ## n efectivo
+  varhat = 1/(4*n_effec)            ## varianza para zd  
+)
 
 ## Lectura de covariables 
 
@@ -53,18 +64,11 @@ data_syn <-
 
 # names(data_syn)
 
-formula_mod  <- formula(~ prop_b50median_afc_2020 +                 
-                          prop_fonasa_a_2019 +                      
-                          log_ing_municipales_permanentes_pc_2018 + 
-                          prop_fonasa_b_2019 +                      
-                          prop_fonasa_c_2019 +                      
-                          prop_obeso_sobrepeso_menores_2018_w +     
-                          prop_red_publica_2017 +                   
-                          prop_ism_afc_2020 +                       
-                          promedio_simce_hist_8b_2019 +             
-                          prop_camion_aljibe_2017 +                 
-                          prop_obeso_sobrepeso_menores_2018 +       
-                          prop_rio_vertiente_estero_canal_2017  )
+colnames(base_cov_new)## Tomado del script main_V1.R
+
+formula_mod <- formula(paste("~",paste(colnames(base_cov_new)[-1]),
+                 collapse = " + "))
+
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
 
@@ -77,7 +81,8 @@ sample_data <- list(
   p  = ncol(Xdat),       # Número de regresores.
   X  = as.matrix(Xdat),  # Covariables Observados.
   Xs = as.matrix(Xs),    # Covariables NO Observados
-  y  = as.numeric(data_dir$T_ModerateSevere),
+  # Hay que hacer la transformación antes de compilar el código
+  y  = as.numeric(data_dir$T_ModerateSevere),  
   sigma_e = sqrt(data_dir$varhat)
 )
 
@@ -90,8 +95,8 @@ model_FH_arcoseno  <- stan(
   file = fit_FH_arcoseno,  
   data = sample_data,   
   verbose = FALSE,
-  warmup = 5000,         
-  iter = 6500,            
+  warmup = 1000,         
+  iter = 2000,            
   cores = 4              
 )
 
@@ -125,5 +130,35 @@ data_dir %<>% mutate(pred_arcoseno = theta_FH$mean,
                      pred_arcoseno_EE = theta_FH$sd,
                      Cv_pred = pred_arcoseno_EE/pred_arcoseno)
 
+arcsin_freq <-
+  read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
+            sheet = 2) %>%
+  transmute(Domain,
+            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
+
+temp <-
+  data_dir %>% 
+  select(comuna, ModerateSevere, pred_arcoseno) %>%
+  inner_join(arcsin_freq, by = dam2)
+
+p_temp2 <- p_temp + 
+  geom_density(data = temp, aes(x = FH),
+               colour = "red" , size = 1.5)
+
+ggsave(plot = p_temp2,
+       filename =  "Data/RecursosBook/02/2_ppc_arcosin.jpeg", 
+       scale = 3)
+
+
+p11 <- ggplot(temp, aes(x = ModerateSevere, y = Direct)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) 
+
+# Estimación con la ecuación ponderada de FH Vs estimación sintética
+p12 <- ggplot(temp, aes(x = pred_arcoseno, y = FH)) +
+  geom_point() + 
+  geom_abline(slope = 1,intercept = 0, colour = "red") +
+  theme_bw(10) 
 
 
