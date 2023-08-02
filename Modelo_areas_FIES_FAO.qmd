@@ -216,18 +216,28 @@ $$
 
 Luego de recopilar la información proporcionada por FAO, se procedió al ajuste de los 4 modelos anteriores utilizando un conjunto de covariables detalladas a continuación:
 
-- prop_b50median_afc_2020
-- prop_fonasa_a_2019
-- log_ing_municipales_permanentes_pc_2018
-- prop_fonasa_b_2019
-- prop_fonasa_c_2019
-- prop_obeso_sobrepeso_menores_2018_w
-- prop_red_publica_2017
-- prop_ism_afc_2020
-- promedio_simce_hist_8b_2019
-- prop_camion_aljibe_2017
-- prop_obeso_sobrepeso_menores_2018
-- prop_rio_vertiente_estero_canal_2017
+- region                                      
+- accesibilidad_hospitales                    
+- luces_nocturnas                             
+- prop_b50median_afc_2020                     
+- prop_fonasa_a_2019                          
+- prop_fonasa_c_2019                          
+- tasa_victimizacion_2019                     
+- tasa_mort_infantil_2017                     
+- log_ing_municipales_permanentes_pc_2018     
+- prop_am_bajo_peso_2018                      
+- prop_am_normal_2018                         
+- prop_am_obeso_2018                          
+- prop_obeso_sobrepeso_menores_2018           
+- prop_riesgo_desnutricion_menores_2018       
+- prop_obeso_sobrepeso_menores_2018_w         
+- prop_isapre_2019                            
+- prop_red_publica_2017                       
+- prop_camion_aljibe_2017                     
+- prop_rio_vertiente_estero_canal_2017        
+- prop_deficit_habitacional_cuantitativo_2017 
+- indice_de_vejez_2020                        
+ 
 
 Posteriormente, se llevó a cabo un análisis de chequeo predictivo con el fin de seleccionar el modelo más adecuado. Cabe destacar que se realizaron 6500 iteraciones, descartando las primeras 5000 iteraciones como parte del proceso de quemado. Al evaluar el criterio de Rhat, se pudo constatar que todas las cadenas del modelo convergieron satisfactoriamente.  
 
@@ -397,7 +407,7 @@ knitr::include_graphics("Data/RecursosBook/03/1_validacion_Bench.jpeg")
 
 
 ```{r echo=FALSE, out.width="200%"}
-knitr::include_graphics("Data/RecursosBook/04/CHL_FIES.jpeg")
+knitr::include_graphics("Data/RecursosBook/04/CHL_FIES2.jpeg")
 ```
 
 ### Tabla con las estimaciones por comuna. 
