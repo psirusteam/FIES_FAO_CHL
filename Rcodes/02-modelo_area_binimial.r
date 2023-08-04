@@ -45,9 +45,10 @@ base_FH <- inner_join(
 ) %>% mutate(
   deff_FGV = var.tot.smooth.corr / (var.tot / deff),
   n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
+  T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
   n_effec = n_eff_FGV,              ## n efectivo
+  varhat = 1/(4*n_effec)            ## varianza para zd  
 )
-
 
 ## Lectura de covariables 
 
@@ -61,12 +62,10 @@ data_syn <-
   base_FH %>% anti_join(data_dir %>% select(all_of(dam2)))
 
 # names(data_syn)
-
 colnames(base_cov_new)## Tomado del script main_V1.R
 
 formula_mod <- formula(paste("~",paste(colnames(base_cov_new)[-1]),
                              collapse = " + "))
-
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
 
@@ -86,7 +85,7 @@ sample_data <- list(
   y_effect  = y_effect          # Estimación directa. 
 )
 
-fit_FH_binomial    <- "Data/modelosStan/14FH_binomial.stan"
+fit_FH_binomial    <- "Data/modelosStan/14FH_binomial2.stan"
 
 options(mc.cores = parallel::detectCores())
 rstan::rstan_options(auto_write = TRUE) 
@@ -95,14 +94,18 @@ model_FH_Binomial  <- stan(
   file = fit_FH_binomial  ,  
   data = sample_data,   
   verbose = FALSE,
-  warmup = 2000,         
-  iter = 3000,            
+  warmup = 5000,         
+  iter = 6500,            
   cores = 4              
 )
 
 saveRDS(object = model_FH_Binomial,
-        file = "Data/model_FH_Binomial_thetaSyn.rds")
+        file = "Data/model_FH_Binomial2.rds")
 
+
+saveRDS(bind_rows(data_dir, data_syn) %>%
+          select(all_of(dam2), id_Orden),
+        file = "Data/id_Orden.rds")
 
 
 paramtros <- summary(model_FH_Binomial)$summary %>% data.frame()
@@ -112,6 +115,7 @@ p_temp <- mcmc_rhat(paramtros$Rhat)
 ggsave(plot = p_temp,
        filename =  "Data/RecursosBook/02/4_rhat_binomial.jpeg", 
        scale = 3)
+
 
 y_pred_B <- as.array(model_FH_Binomial, pars = "theta") %>% 
   as_draws_matrix()
@@ -128,89 +132,16 @@ posterior_sigma2_u <- as.array(model_FH_Binomial, pars = "sigma2_u")
     mcmc_areas(posterior_sigma2_u) ) / 
   mcmc_trace(posterior_sigma2_u)
 
-theta_FH <-   summary(model_FH_Binomial,pars =  "theta")$summary %>%
-  data.frame()
-
-theta_Syn <-   summary(model_FH_Binomial,pars =  "thetaSyn")$summary %>%
-  data.frame()
-
-
-data_dir %<>% mutate(theta_pred  = theta_FH$mean, 
-                     theta_pred_EE = theta_FH$sd,
-                     Cv_pred = theta_pred_EE/theta_pred,
-                     thetaSyn  = theta_Syn$mean)
-
-
-# Estimación con la ecuación ponderada de FH Vs estimación sintética
-p12 <- ggplot(data_dir, aes(x = thetaSyn, y = theta_pred)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) + labs(y = "Predicción de modelo", x = "Estimación sintética") 
-# Estimación con la ecuación ponderada de FH Vs estimación directa
-p21 <- ggplot(data_dir, aes(x = ModerateSevere, y = theta_pred)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) + labs(y = "Predicción de modelo", x = "Estimación directa") 
-# Estimación directa Vs estimación sintética
-p22 <- ggplot(data_dir, aes(x = ModerateSevere, y = thetaSyn)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) + labs(y = "Estimación sintética", x = "Estimación directa") 
-p_temp = (p12+p21+p22)
-
-
-ggsave(plot = p_temp,
-       filename =  "Data/RecursosBook/02/5_comparando.jpeg", 
-       scale = 2)
-
-
 
 theta_FH_pred <- summary(model_FH_Binomial,pars =  "thetaLP")$summary %>%
   data.frame()
 
-data_syn <- data_syn %>% 
+estimacionesPre <- bind_rows(data_dir, data_syn) %>% 
   mutate(theta_pred = theta_FH_pred$mean,
          theta_pred_EE = theta_FH_pred$sd,
-         Cv_pred = theta_pred_EE/theta_pred,
-         thetaSyn = theta_pred)
-
-estimacionesPre <- bind_rows(data_dir, data_syn) 
+         Cv_pred = theta_pred_EE/theta_pred)
 
 saveRDS(estimacionesPre, "Data/estimacionesPre.rds")
-
-arcsin_freq <-
-  readxl::read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
-                    sheet = 2) %>%
-  transmute(Domain,
-            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
-
-temp <-
-  data_dir %>% 
-  select(comuna, ModerateSevere, theta_pred) %>%
-  inner_join(arcsin_freq, by = dam2)
-
-p_temp <-
-  ppc_dens_overlay(y = as.numeric(data_dir$ModerateSevere), y_pred2)
-
-p_temp2 <- p_temp + 
-  geom_density(data = temp, aes(x = FH),
-               colour = "red" , linewidth = 1.5)
-
-ggsave(plot = p_temp2,
-       filename =  "Data/RecursosBook/02/4_ppc_binomial.jpeg", 
-       scale = 3)
-
-
-p11 <- ggplot(temp, aes(x = ModerateSevere, y = Direct)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) 
-
-# Estimación con la ecuación ponderada de FH Vs estimación sintética
-p12 <- ggplot(temp, aes(x = theta_pred, y = FH)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) 
 
 
 
