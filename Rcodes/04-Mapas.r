@@ -23,7 +23,7 @@ select <- dplyr::select
 dam2 <- "comuna"
 ## Lectura de base de datos
 
-estimacionesBench  <- readRDS("Data/estimacionesBench.rds")
+estimacionesBench  <- readRDS("Data/estimacionesBench_replicas.rds")
 
 ## Leer Shapefile del país
 ShapeSAE <- read_sf("Shape/CHL_dam2.shp")
@@ -36,7 +36,7 @@ brks_lp <- seq(0,0.45,0.09)
 tmap_options(check.and.fix = TRUE)
 Mapa_lp <-
   mapa + tm_polygons(
-    c("theta_pred_RBench"),
+    c("theta_pred_RBench_rep"),
     breaks = brks_lp,
     title = "Inseguridad Alimentaria",
     palette = "Blues",

@@ -119,10 +119,9 @@ estimacionesBench %>% group_by(dam) %>%
 ## Validación de los resultados. 
 
 estimacionesPre <- readRDS("Data/estimacionesPre.rds") %>%
-  transmute(dam2 = haven::as_factor(comuna, levels = "values"),
-            dam2 = str_pad(width = 5, dam2, pad = "0"),
+  transmute(dam2 = comuna,
             dam = str_sub(dam2,1,2),
-            theta_pred,theta_pred_EE,thetaSyn, theta_pred_RBench)
+            theta_pred,theta_pred_EE)
 
 
 
@@ -141,10 +140,10 @@ IC_dir <- readRDS("Data/FIES_region.rds") %>%
 temp <- estimacionesBench %>% left_join( estimacionesPre ) %>% 
   group_by(dam) %>% 
   summarise(
-    "FIES Modelo" = sum(W_i * theta_pred),
-    "FIES Modelo Syn" = sum(W_i * thetaSyn),
-    "FIES Modelo Bench" = sum(W_i * theta_pred_RBench),
-    "FIES Modelo Bench Replicas" = sum(W_i * theta_pred_RBench_rep)
+   # "FIES Modelo" = sum(W_i * theta_pred),
+   # "FIES Modelo Syn" = sum(W_i * thetaSyn),
+   # "FIES Modelo Bench" = sum(W_i * theta_pred_RBench),
+    "FIES Modelo Bench" = sum(W_i * theta_pred_RBench_rep)
   ) %>%   
   left_join(directoDam, by = "dam")  %>% 
   mutate(id = 1:n()) %>% rename("FIES Directo"  = ModerateSevere)
@@ -162,20 +161,8 @@ p_temp <- ggplot(data = temp, aes(x = id, y = Estimacion, shape = Metodo)) +
   labs(y = "", x = "")
    
 ggsave(plot = p_temp,
-       filename =  "Data/RecursosBook/03/2_validacion_Bench_rep.jpeg", 
+       filename =  "Data/RecursosBook/03/2_validacion_Bench_rep2.jpeg", 
        scale = 1.5)
-
-temp <- estimacionesBench %>% left_join( estimacionesPre )
-
-p_temp <- ggplot(temp, aes(x = theta_pred_RBench_sd, y = theta_pred_EE)) +
-  geom_point() + 
-  geom_abline(slope = 1,intercept = 0, colour = "red") +
-  theme_bw(10) + labs(y = "SD Anterior", x = "SD con replica") 
-
-ggsave(plot = p_temp,
-       filename =  "Data/RecursosBook/03/3_validacion_Bench_SD_rep.jpeg", 
-       scale = 1.5)
-
 
 ## Resultados del Benchmark
 

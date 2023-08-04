@@ -132,20 +132,14 @@ posterior_sigma2_u <- as.array(model_FH_Binomial, pars = "sigma2_u")
     mcmc_areas(posterior_sigma2_u) ) / 
   mcmc_trace(posterior_sigma2_u)
 
-theta_FH <-   summary(model_FH_Binomial,pars =  "theta")$summary %>%
-  data.frame()
-data_dir %<>% mutate(theta_pred  = theta_FH$mean, 
-                     theta_pred_EE = theta_FH$sd,
-                     Cv_pred = theta_pred_EE/theta_pred )
 
 theta_FH_pred <- summary(model_FH_Binomial,pars =  "thetaLP")$summary %>%
   data.frame()
-data_syn <- data_syn %>% 
+
+estimacionesPre <- bind_rows(data_dir, data_syn) %>% 
   mutate(theta_pred = theta_FH_pred$mean,
          theta_pred_EE = theta_FH_pred$sd,
          Cv_pred = theta_pred_EE/theta_pred)
-
-estimacionesPre <- bind_rows(data_dir, data_syn) 
 
 saveRDS(estimacionesPre, "Data/estimacionesPre.rds")
 
