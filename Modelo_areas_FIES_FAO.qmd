@@ -407,17 +407,17 @@ knitr::include_graphics("Data/RecursosBook/03/1_validacion_Bench.jpeg")
 
 
 ```{r echo=FALSE, out.width="200%"}
-knitr::include_graphics("Data/RecursosBook/04/CHL_FIES2.jpeg")
+knitr::include_graphics("Data/RecursosBook/04/CHL_FIES3.jpeg")
 ```
 
 ### Tabla con las estimaciones por comuna. 
 
 ```{r , echo=FALSE}
-readRDS("Data/estimacionesBench.rds") %>% 
+readRDS("Data/estimacionesBench_replicas.rds") %>% 
   transmute(Region = dam, 
             Comuna = dam2, 
-            FIES = theta_pred_RBench, 
-            FIES_ee = theta_pred_EE, 
+            FIES = theta_pred_RBench_rep, 
+            FIES_ee = theta_pred_RBench_rep_sd, 
             'FIES_cv(%)' = round(FIES_ee/FIES*100,3)) %>% arrange(desc(`FIES_cv(%)`)) %>% 
   tba()
 ```
