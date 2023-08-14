@@ -1,7 +1,7 @@
 --- 
 title: "Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria"
 author: "Andrés Gutiérrez^[Experto Regional en Estadísticas Sociales - Comisión Económica para América Latina y el Caribe (CEPAL) -  andres.gutierrez@cepal.org], Stalyn Guerrero^[Consultor - Comisión Económica para América Latina y el Caribe (CEPAL), guerrerostalyn@gmail.com]"
-date: "2023-08-04"
+date: "2023-08-14"
 documentclass: book
 # bibliography: [CEPAL.bib]
 biblio-style: apalike

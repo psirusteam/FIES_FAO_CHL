@@ -119,7 +119,7 @@ ggsave(plot = p_temp,
 
 y_pred_B <- as.array(model_FH_Binomial, pars = "theta") %>% 
   as_draws_matrix()
-rowsrandom <- sample(nrow(y_pred_B), 500)
+rowsrandom <- sample(nrow(y_pred_B), 100)
 y_pred2 <- y_pred_B[rowsrandom, ]
 p_temp <- ppc_dens_overlay(y = as.numeric(data_dir$ModerateSevere), y_pred2)
 
@@ -145,3 +145,21 @@ saveRDS(estimacionesPre, "Data/estimacionesPre.rds")
 
 
 
+arcsin_freq <-
+  readxl::read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
+            sheet = 2) %>%
+  transmute(Domain,
+            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
+
+temp <-
+  data_dir %>% 
+  select(comuna, ModerateSevere) %>%
+  inner_join(arcsin_freq, by = dam2)
+
+p_temp2 <- p_temp + 
+  geom_density(data = temp, aes(x = FH),
+               colour = "red" , linewidth = 1.5)
+
+ggsave(plot = p_temp2,
+       filename =  "Data/RecursosBook/02/4_ppc_binomial.jpeg", 
+       scale = 3)
