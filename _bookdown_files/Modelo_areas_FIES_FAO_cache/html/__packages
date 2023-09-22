@@ -10,3 +10,11 @@ dplyr
 stringr
 forcats
 lubridate
+posterior
+StanHeaders
+rstan
+Rcpp
+rstanarm
+rstantools
+bayesplot
+magrittr

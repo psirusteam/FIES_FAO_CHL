@@ -71,9 +71,9 @@ summary(FGV1)
 ##Resultados del summary
 # Call:
 #   lm(formula = ln_sigma2 ~ n + I(n^2) + I(sqrt(FIES)), data = baseFGV)
-# Residual standard error: 0.6956 on 249 degrees of freedom
-# Multiple R-squared:  0.4713,	Adjusted R-squared:  0.465 
-# F-statistic:    74 on 3 and 249 DF,  p-value: < 2.2e-16
+# Residual standard error: 0.4594 on 279 degrees of freedom
+# Multiple R-squared:  0.7628,	Adjusted R-squared:  0.7602 
+# F-statistic:   299 on 3 and 279 DF,  p-value: < 2.2e-16
 
 ## Determinar el valor de la constante delta. 
 
@@ -112,9 +112,6 @@ base_sae <- left_join(indicador_dom,
 
 #----------Transformación de la data para consumo final-------------------
 ##
-table(is.na(base_FH$hat_var))
-table(is.na(base_FH$hat_var), is.na(base_FH$var.tot))
-
 
 base_FH <- base_sae %>%
   mutate(
@@ -130,11 +127,14 @@ base_FH <- base_sae %>%
     ModerateSevere = ifelse(is.na(hat_var), NA_real_, ModerateSevere) 
   )
 
+table(is.na(base_FH$hat_var))
+table(is.na(base_FH$hat_var), is.na(base_FH$var.tot))
+
 table(base_FH$calidad2, is.na(base_FH$deff) )
 table(base_FH$calidad2, is.na(base_FH$deff_FGV) )
 table(base_FH$calidad2, is.na(base_FH$hat_var) )
 
-saveRDS(object = base_FH, "Data/base_FH.Rds")
+#saveRDS(object = base_FH, "Data/base_FH.Rds")
 
 
 ##### Análisis gráfico#####

@@ -15,6 +15,7 @@ library(rstanarm)
 library(rstantools)
 library(bayesplot)
 library(posterior)
+library(readxl)
 
 theme_set(theme_bw())
 thematic_on(
@@ -26,29 +27,21 @@ select <- dplyr::select
 ## Lectura de base de datos
 dam2 <- "comuna"
 
-base_FH_antes <- readRDS("Data/data_v1/data_SAE_complete_final.rds") %>% 
-  select(comuna:var.tot.smooth.corr) %>% 
-  mutate(comuna = str_pad(haven::as_factor( comuna, levels = "values"), 
-                          width = 5, pad = "0"))
+base_FH <-
+  readRDS(
+    "Data/SAE-FIES Chile/Material for bayesian application/data_SAE_complete_final_arcsin.rds"
+  ) %>%
+  mutate(comuna = str_pad(
+    haven::as_factor(comuna, levels = "values"),
+    width = 5,
+    pad = "0"
+  ))
 
-base_cov_new <- readRDS("Data/data_SAE_complete_final_arcsin.rds") %>% 
-  select(comuna,accesibilidad_hospitales:region) %>% 
-  mutate(comuna = str_pad(comuna, width = 5, pad = "0"))
 
-base_FH <- inner_join(base_FH_antes, base_cov_new)
 
-dir_estim <- readRDS("Data/data_v1/dir_estim_comuna_CASEN_2020_hh.rds") %>% 
-  transmute(
-    comuna = str_pad(comuna, width = 5, pad = "0"), n, deff)
-
-base_FH <- inner_join(
-  base_FH, dir_estim, by = dam2
-) %>% mutate(
-  deff_FGV = var.tot.smooth.corr / (var.tot / deff),
-  n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
-  T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
-  n_effec = n_eff_FGV,              ## n efectivo
-  varhat = 1/(4*n_effec)            ## varianza para zd  
+base_FH <- base_FH %>% mutate(
+   T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
+  varhat = 1/(4*n_eff_fgv)            ## varianza para zd  
 )
 
 ## Lectura de covariables 
@@ -63,10 +56,10 @@ data_syn <-
   base_FH %>% anti_join(data_dir %>% select(all_of(dam2)))
 
 # names(data_syn)
+names_cov <- data_dir %>% select(accesibilidad_hospitales:region) %>% 
+  names()
 
-colnames(base_cov_new)## Tomado del script main_V1.R
-
-formula_mod <- formula(paste("~",paste(colnames(base_cov_new)[-1]),
+formula_mod <- formula(paste("~",paste(names_cov),
                  collapse = " + "))
 
 ## Dominios observados
@@ -109,6 +102,8 @@ paramtros <- summary(model_FH_arcoseno)$summary %>% data.frame()
 
 mcmc_rhat(paramtros$Rhat)
 
+paramtros %>% filter(Rhat>1.05)
+
 y_pred_B <- as.array(model_FH_arcoseno, pars = "theta") %>% 
   as_draws_matrix()
 rowsrandom <- sample(nrow(y_pred_B), 100)
@@ -143,7 +138,7 @@ temp <-
 
 p_temp2 <- p_temp + 
   geom_density(data = temp, aes(x = FH),
-               colour = "red" , size = 1.5)
+               colour = "red" , linewidth = 1.5)
 
 ggsave(plot = p_temp2,
        filename =  "Data/RecursosBook/02/2_ppc_arcosin.jpeg", 

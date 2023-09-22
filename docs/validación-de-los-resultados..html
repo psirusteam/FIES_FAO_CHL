@@ -23,14 +23,14 @@
 <meta name="author" content="Andrés Gutiérrez, Stalyn Guerrero" />
 
 
-<meta name="date" content="2023-08-14" />
+<meta name="date" content="2023-09-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="proceso-de-benchmark.html"/>
+<link rel="prev" href="proceso-de-estimación-y-benchmark.html"/>
 <link rel="next" href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -161,7 +161,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot-con-tranformación-arcoseno."><i class="fa fa-check"></i>Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno.</a></li>
 <li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-beta."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Beta.</a></li>
 <li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-binomial."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Binomial.</a></li>
-<li class="chapter" data-level="2.1" data-path="proceso-de-benchmark.html"><a href="proceso-de-benchmark.html"><i class="fa fa-check"></i><b>2.1</b> Proceso de Benchmark</a></li>
+<li class="chapter" data-level="2.1" data-path="proceso-de-estimación-y-benchmark.html"><a href="proceso-de-estimación-y-benchmark.html"><i class="fa fa-check"></i><b>2.1</b> Proceso de estimación y Benchmark</a></li>
 <li class="chapter" data-level="2.2" data-path="validación-de-los-resultados..html"><a href="validación-de-los-resultados..html"><i class="fa fa-check"></i><b>2.2</b> Validación de los resultados.</a></li>
 <li class="chapter" data-level="2.3" data-path="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>2.3</b> Mapa con la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
 <ul>
@@ -191,40 +191,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="validación-de-los-resultados." class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Validación de los resultados.<a href="validación-de-los-resultados..html#validación-de-los-resultados." class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>La visualización resultante del siguiente código muestra puntos de diferentes formas y colores para representar los diferentes métodos de estimación, y dos líneas punteadas que representan los intervalos de confianza superior e inferior para los valores observados en la variable <code>theta_dir</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="validación-de-los-resultados..html#cb9-1" tabindex="-1"></a>IC_dir <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/FIES_region.rds&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="validación-de-los-resultados..html#cb9-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(dam, FIES, var_hat) <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="validación-de-los-resultados..html#cb9-3" tabindex="-1"></a>  <span class="fu">transmute</span>(dam,</span>
-<span id="cb9-4"><a href="validación-de-los-resultados..html#cb9-4" tabindex="-1"></a>            <span class="at">Ls =</span> FIES <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_hat),</span>
-<span id="cb9-5"><a href="validación-de-los-resultados..html#cb9-5" tabindex="-1"></a>            <span class="at">Li =</span> FIES <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_hat))</span>
-<span id="cb9-6"><a href="validación-de-los-resultados..html#cb9-6" tabindex="-1"></a>temp <span class="ot">&lt;-</span> estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">left_join</span>( estimacionesPre ) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-7"><a href="validación-de-los-resultados..html#cb9-7" tabindex="-1"></a>  <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-8"><a href="validación-de-los-resultados..html#cb9-8" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb9-9"><a href="validación-de-los-resultados..html#cb9-9" tabindex="-1"></a>            <span class="st">&quot;FIES Modelo&quot;</span> <span class="ot">=</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred),</span>
-<span id="cb9-10"><a href="validación-de-los-resultados..html#cb9-10" tabindex="-1"></a>            <span class="st">&quot;FIES Modelo Syn&quot;</span> <span class="ot">=</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> thetaSyn),</span>
-<span id="cb9-11"><a href="validación-de-los-resultados..html#cb9-11" tabindex="-1"></a>            <span class="st">&quot;FIES Modelo Bench&quot;</span> <span class="ot">=</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred_RBench)</span>
-<span id="cb9-12"><a href="validación-de-los-resultados..html#cb9-12" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span>   </span>
-<span id="cb9-13"><a href="validación-de-los-resultados..html#cb9-13" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>)  <span class="sc">%&gt;%</span> </span>
-<span id="cb9-14"><a href="validación-de-los-resultados..html#cb9-14" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span>
-<span id="cb9-15"><a href="validación-de-los-resultados..html#cb9-15" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="validación-de-los-resultados..html#cb9-16" tabindex="-1"></a>temp <span class="sc">%&lt;&gt;%</span> <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;Metodo&quot;</span>,<span class="at">value =</span> <span class="st">&quot;Estimacion&quot;</span>,</span>
-<span id="cb9-17"><a href="validación-de-los-resultados..html#cb9-17" tabindex="-1"></a>                 <span class="sc">-</span>id, <span class="sc">-</span>dam)</span>
-<span id="cb9-18"><a href="validación-de-los-resultados..html#cb9-18" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(temp,IC_dir)</span>
-<span id="cb9-19"><a href="validación-de-los-resultados..html#cb9-19" tabindex="-1"></a>p_temp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> temp, <span class="fu">aes</span>(<span class="at">x =</span> id, <span class="at">y =</span> Estimacion, <span class="at">shape =</span> Metodo)) <span class="sc">+</span></span>
-<span id="cb9-20"><a href="validación-de-los-resultados..html#cb9-20" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Metodo), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-21"><a href="validación-de-los-resultados..html#cb9-21" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Li), <span class="at">linetype  =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-22"><a href="validación-de-los-resultados..html#cb9-22" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Ls),  <span class="at">linetype  =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-23"><a href="validación-de-los-resultados..html#cb9-23" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb9-24"><a href="validación-de-los-resultados..html#cb9-24" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> temp<span class="sc">$</span>id,</span>
-<span id="cb9-25"><a href="validación-de-los-resultados..html#cb9-25" tabindex="-1"></a>                     <span class="at">labels =</span>  temp<span class="sc">$</span>dam) <span class="sc">+</span></span>
-<span id="cb9-26"><a href="validación-de-los-resultados..html#cb9-26" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
-<p><img src="Data/RecursosBook/03/1_validacion_Bench.jpeg" /><!-- --></p>
+<p>El siguiente código define los intervalos de confianza para las estimaciones directas.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="validación-de-los-resultados..html#cb13-1" tabindex="-1"></a>IC_dir <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/FIES_region.rds&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="validación-de-los-resultados..html#cb13-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(dam, FIES, var_hat) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="validación-de-los-resultados..html#cb13-3" tabindex="-1"></a>  <span class="fu">transmute</span>(dam,</span>
+<span id="cb13-4"><a href="validación-de-los-resultados..html#cb13-4" tabindex="-1"></a>            <span class="at">Ls =</span> FIES <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_hat),</span>
+<span id="cb13-5"><a href="validación-de-los-resultados..html#cb13-5" tabindex="-1"></a>            <span class="at">Li =</span> FIES <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_hat))</span></code></pre></div>
+<p>Ahora, examinar las estimaciones del modelo de área sin incluir el benchmark.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="validación-de-los-resultados..html#cb14-1" tabindex="-1"></a>estimacionesPre <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/estimacionesPre.rds&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="validación-de-los-resultados..html#cb14-2" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">dam2 =</span> comuna,</span>
+<span id="cb14-3"><a href="validación-de-los-resultados..html#cb14-3" tabindex="-1"></a>            <span class="at">dam =</span> <span class="fu">str_sub</span>(dam2,<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb14-4"><a href="validación-de-los-resultados..html#cb14-4" tabindex="-1"></a>            <span class="at">theta_pred =</span> pred_beta_log,</span>
+<span id="cb14-5"><a href="validación-de-los-resultados..html#cb14-5" tabindex="-1"></a>            <span class="at">theta_pred_EE =</span> pred_beta_log_EE)</span></code></pre></div>
+<p>A continuación se consolida las base con las estimaciones por comuna.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="validación-de-los-resultados..html#cb15-1" tabindex="-1"></a>temp <span class="ot">&lt;-</span> estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">left_join</span>( estimacionesPre ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="validación-de-los-resultados..html#cb15-2" tabindex="-1"></a>  <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="validación-de-los-resultados..html#cb15-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-4"><a href="validación-de-los-resultados..html#cb15-4" tabindex="-1"></a>            <span class="st">&quot;FIES Modelo&quot;</span> <span class="ot">=</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred),</span>
+<span id="cb15-5"><a href="validación-de-los-resultados..html#cb15-5" tabindex="-1"></a>            <span class="st">&quot;FIES Modelo Bench&quot;</span> <span class="ot">=</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred_RBench_rep)</span>
+<span id="cb15-6"><a href="validación-de-los-resultados..html#cb15-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span>   </span>
+<span id="cb15-7"><a href="validación-de-los-resultados..html#cb15-7" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>)  <span class="sc">%&gt;%</span> </span>
+<span id="cb15-8"><a href="validación-de-los-resultados..html#cb15-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="validación-de-los-resultados..html#cb16-1" tabindex="-1"></a>temp <span class="sc">%&lt;&gt;%</span> <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;Metodo&quot;</span>,<span class="at">value =</span> <span class="st">&quot;Estimacion&quot;</span>,</span>
+<span id="cb16-2"><a href="validación-de-los-resultados..html#cb16-2" tabindex="-1"></a>                 <span class="sc">-</span>id, <span class="sc">-</span>dam)</span>
+<span id="cb16-3"><a href="validación-de-los-resultados..html#cb16-3" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(temp,IC_dir)</span>
+<span id="cb16-4"><a href="validación-de-los-resultados..html#cb16-4" tabindex="-1"></a>p_temp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> temp, <span class="fu">aes</span>(<span class="at">x =</span> id, <span class="at">y =</span> Estimacion, <span class="at">shape =</span> Metodo)) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="validación-de-los-resultados..html#cb16-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Metodo), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="validación-de-los-resultados..html#cb16-6" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Li), <span class="at">linetype  =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="validación-de-los-resultados..html#cb16-7" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Ls),  <span class="at">linetype  =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="validación-de-los-resultados..html#cb16-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">10</span>) <span class="sc">+</span> </span>
+<span id="cb16-9"><a href="validación-de-los-resultados..html#cb16-9" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> temp<span class="sc">$</span>id,</span>
+<span id="cb16-10"><a href="validación-de-los-resultados..html#cb16-10" tabindex="-1"></a>                     <span class="at">labels =</span>  temp<span class="sc">$</span>dam) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="validación-de-los-resultados..html#cb16-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb16-12"><a href="validación-de-los-resultados..html#cb16-12" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="validación-de-los-resultados..html#cb16-13" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb16-14"><a href="validación-de-los-resultados..html#cb16-14" tabindex="-1"></a>  <span class="at">plot =</span> p_temp,</span>
+<span id="cb16-15"><a href="validación-de-los-resultados..html#cb16-15" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;Data/RecursosBook/03/1_validacion_Bench.jpeg&quot;</span>,</span>
+<span id="cb16-16"><a href="validación-de-los-resultados..html#cb16-16" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">12</span>, </span>
+<span id="cb16-17"><a href="validación-de-los-resultados..html#cb16-17" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">7</span></span>
+<span id="cb16-18"><a href="validación-de-los-resultados..html#cb16-18" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="Data/RecursosBook/03/1_validacion_Bench.jpeg" width="1800" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="proceso-de-benchmark.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="proceso-de-estimación-y-benchmark.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

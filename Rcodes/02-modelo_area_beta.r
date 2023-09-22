@@ -26,28 +26,23 @@ select <- dplyr::select
 ## Lectura de base de datos
 dam2 <- "comuna"
 
-base_FH_antes <- readRDS("Data/data_v1/data_SAE_complete_final.rds") %>% 
-  select(comuna:var.tot.smooth.corr) %>% 
-  mutate(comuna = str_pad(haven::as_factor( comuna, levels = "values"), 
-                          width = 5, pad = "0"))
+base_FH <-
+  readRDS(
+    "Data/SAE-FIES Chile/Material for bayesian application/data_SAE_complete_final_arcsin.rds"
+  ) %>%
+  mutate(comuna = str_pad(
+    haven::as_factor(comuna, levels = "values"),
+    width = 5,
+    pad = "0"
+  ))
 
-base_cov_new <- readRDS("Data/data_SAE_complete_final_arcsin.rds") %>% 
-  select(comuna,accesibilidad_hospitales:region) %>% 
-  mutate(comuna = str_pad(comuna, width = 5, pad = "0"))
 
-base_FH <- inner_join(base_FH_antes, base_cov_new)
 
-dir_estim <- readRDS("Data/data_v1/dir_estim_comuna_CASEN_2020_hh.rds") %>% 
-  transmute(
-    comuna = str_pad(comuna, width = 5, pad = "0"), n, deff)
-
-base_FH <- inner_join(
-  base_FH, dir_estim, by = dam2
-) %>% mutate(
-  deff_FGV = var.tot.smooth.corr / (var.tot / deff),
-  n_eff_FGV = n / deff_FGV, #Número efectivo de personas encuestadas
-  n_effec = n_eff_FGV,              ## n efectivo
+base_FH <- base_FH %>% mutate(
+  T_ModerateSevere = asin(sqrt(ModerateSevere)),  ## creando zd
+  varhat = 1/(4*n_eff_fgv)            ## varianza para zd  
 )
+
 ## Lectura de covariables 
 
 table(is.na(base_FH$ModerateSevere))
@@ -60,9 +55,10 @@ data_syn <-
   base_FH %>% anti_join(data_dir %>% select(all_of(dam2)))
 
 # names(data_syn)
-colnames(base_cov_new)## Tomado del script main_V1.R
+names_cov <- data_dir %>% select(accesibilidad_hospitales:region) %>% 
+  names()
 
-formula_mod <- formula(paste("~",paste(colnames(base_cov_new)[-1]),
+formula_mod <- formula(paste("~",paste(names_cov),
                              collapse = " + "))
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
@@ -77,7 +73,7 @@ sample_data <- list(
   X  = as.matrix(Xdat),  # Covariables Observados.
   Xs = as.matrix(Xs),    # Covariables NO Observados
   y  = as.numeric(data_dir$ModerateSevere),
-  phi = data_dir$n_eff_FGV - 1 
+  phi = data_dir$n_eff_fgv - 1 
 )
 
 fit_FH_beta_logitic   <- "Data/modelosStan/16FH_beta_logitc.stan"
@@ -97,9 +93,23 @@ model_FH_beta_logitic  <- stan(
 saveRDS(object = model_FH_beta_logitic,
         file = "Data/model_FH_beta_logitic.rds")
 
+saveRDS(bind_rows(data_dir, data_syn) %>%
+          transmute(comuna, id_Orden = 1:n()),
+        file = "Data/id_Orden.rds")
+
+model_FH_beta_logitic <- readRDS("Data/model_FH_beta_logitic.rds")
+
 paramtros <- summary(model_FH_beta_logitic)$summary %>% data.frame()
 
 mcmc_rhat(paramtros$Rhat)
+
+paramtros %>% filter(Rhat>1.05)
+
+p_temp <- mcmc_rhat(paramtros$Rhat)
+
+ggsave(plot = p_temp,
+       filename =  "Data/RecursosBook/02/3_rhat_beta.jpeg", 
+       scale = 3)
 
 y_pred_B <- as.array(model_FH_beta_logitic, pars = "theta") %>% 
   as_draws_matrix()
@@ -122,11 +132,19 @@ data_dir %<>% mutate(pred_beta_log = theta_FH$mean,
                      pred_beta_log_EE = theta_FH$sd,
                      Cv_pred = pred_beta_log_EE/pred_beta_log)
 
+theta_FH_pred <-   summary(model_FH_beta_logitic,pars =  "thetapred")$summary %>%
+  data.frame()
+data_syn %<>% mutate(pred_beta_log = theta_FH_pred$mean, 
+                     pred_beta_log_EE = theta_FH_pred$sd,
+                     Cv_pred = pred_beta_log_EE/pred_beta_log)
+
+
 arcsin_freq <-
   readxl::read_xlsx("Data/SAE-FIES Chile/Outputs/hh/Indirect estimates/fh_arcsin.xlsx",
             sheet = 2) %>%
   transmute(Domain,
-            comuna = str_pad(Domain, width = 5, pad = "0"), Direct, FH)
+            comuna = str_pad(Domain, width = 5, pad = "0"), 
+            Direct, FH,FH_BENCH)
 
 temp <-
   data_dir %>% 
@@ -154,5 +172,7 @@ p12 <- ggplot(temp, aes(x = pred_beta_log, y = FH)) +
   theme_bw(10) 
 
 
+estimacionesPre <- bind_rows(data_dir, data_syn) 
+saveRDS(estimacionesPre, "Data/estimacionesPre.rds")
 
 

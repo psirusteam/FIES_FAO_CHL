@@ -7,7 +7,7 @@ modelo-de-área-de-fay-herriot-con-tranformación-arcoseno.
 modelos-de-área-con-variable-respuesta-beta.
 modelos-de-área-con-variable-respuesta-binomial.
 estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria
-proceso-de-benchmark
+proceso-de-estimación-y-benchmark
 validación-de-los-resultados.
 mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria
 tabla-con-las-estimaciones-por-comuna.

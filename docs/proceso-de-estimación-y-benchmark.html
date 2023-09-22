@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2.1 Proceso de estimación y Benchmark | Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</title>
+  <meta name="description" content="Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2.1 Proceso de estimación y Benchmark | Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  <meta name="github-repo" content="psirusteam/HHS-Handbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2.1 Proceso de estimación y Benchmark | Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  
+  <meta name="twitter:description" content="Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria" />
+  
+
+<meta name="author" content="Andrés Gutiérrez, Stalyn Guerrero" />
+
+
+<meta name="date" content="2023-09-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"/>
+<link rel="next" href="validación-de-los-resultados..html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introducción</a></li>
+<li class="chapter" data-level="1" data-path="modelo-de-área-para-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="modelo-de-área-para-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>1</b> Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="modelo-de-rash.html"><a href="modelo-de-rash.html"><i class="fa fa-check"></i><b>1.1</b> Modelo de Rash</a></li>
+<li class="chapter" data-level="1.2" data-path="fuentes-de-error-en-la-estimación-del-fies.html"><a href="fuentes-de-error-en-la-estimación-del-fies.html"><i class="fa fa-check"></i><b>1.2</b> Fuentes de error en la estimación del FIES</a></li>
+<li class="chapter" data-level="1.3" data-path="modelos-de-área.html"><a href="modelos-de-área.html"><i class="fa fa-check"></i><b>1.3</b> Modelos de área</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelo-de-área-de-fay-herriot"><i class="fa fa-check"></i><b>1.3.1</b> Modelo de área de Fay-Herriot</a></li>
+<li class="chapter" data-level="1.3.2" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelo-de-área-de-fay-herriot-con-tranformación-arcoseno."><i class="fa fa-check"></i><b>1.3.2</b> Modelo de área de Fay-Herriot con tranformación arcoseno.</a></li>
+<li class="chapter" data-level="1.3.3" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelos-de-área-con-variable-respuesta-beta."><i class="fa fa-check"></i><b>1.3.3</b> Modelos de área con variable respuesta Beta.</a></li>
+<li class="chapter" data-level="1.3.4" data-path="modelos-de-área.html"><a href="modelos-de-área.html#modelos-de-área-con-variable-respuesta-binomial."><i class="fa fa-check"></i><b>1.3.4</b> Modelos de área con variable respuesta Binomial.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>2</b> Estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot."><i class="fa fa-check"></i>Resultado para el modelo de área de Fay-Herriot.</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-de-fay-herriot-con-tranformación-arcoseno."><i class="fa fa-check"></i>Resultado para el Modelo de área de Fay-Herriot con tranformación arcoseno.</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-beta."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Beta.</a></li>
+<li class="chapter" data-level="" data-path="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#resultado-para-el-modelo-de-área-con-variable-respuesta-binomial."><i class="fa fa-check"></i>Resultado para el modelo de área con variable respuesta Binomial.</a></li>
+<li class="chapter" data-level="2.1" data-path="proceso-de-estimación-y-benchmark.html"><a href="proceso-de-estimación-y-benchmark.html"><i class="fa fa-check"></i><b>2.1</b> Proceso de estimación y Benchmark</a></li>
+<li class="chapter" data-level="2.2" data-path="validación-de-los-resultados..html"><a href="validación-de-los-resultados..html"><i class="fa fa-check"></i><b>2.2</b> Validación de los resultados.</a></li>
+<li class="chapter" data-level="2.3" data-path="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><i class="fa fa-check"></i><b>2.3</b> Mapa con la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html"><a href="mapa-con-la-estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html#tabla-con-las-estimaciones-por-comuna."><i class="fa fa-check"></i><b>2.3.1</b> Tabla con las estimaciones por comuna.</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a Modelo de área para la estimación de la Escala de Experiencia de Inseguridad Alimentaria </a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="proceso-de-estimación-y-benchmark" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Proceso de estimación y Benchmark<a href="proceso-de-estimación-y-benchmark.html#proceso-de-estimación-y-benchmark" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Leer el modelo y el archivo que contiene el orden en que ingresaron las comunas al modelo.</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="proceso-de-estimación-y-benchmark.html#cb1-1" tabindex="-1"></a>model_FH_beta_logitic <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/model_FH_beta_logitic.rds&quot;</span>)</span>
+<span id="cb1-2"><a href="proceso-de-estimación-y-benchmark.html#cb1-2" tabindex="-1"></a>estimacionesPre <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/id_Orden.rds&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="proceso-de-estimación-y-benchmark.html#cb1-3" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">dam2 =</span> <span class="fu">str_pad</span>(<span class="at">width =</span> <span class="dv">5</span>, comuna, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>),</span>
+<span id="cb1-4"><a href="proceso-de-estimación-y-benchmark.html#cb1-4" tabindex="-1"></a>            <span class="at">dam =</span> <span class="fu">str_sub</span>(dam2, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb1-5"><a href="proceso-de-estimación-y-benchmark.html#cb1-5" tabindex="-1"></a>            id_Orden)</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Obtener los valores posteriores tanto para las comunas observadas como para las no observadas. Organizar estos valores de manera que las filas representen cada comuna y las columnas correspondan a los valores posteriores.</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="proceso-de-estimación-y-benchmark.html#cb2-1" tabindex="-1"></a>y_pred <span class="ot">&lt;-</span> <span class="fu">as.array</span>(model_FH_beta_logitic,</span>
+<span id="cb2-2"><a href="proceso-de-estimación-y-benchmark.html#cb2-2" tabindex="-1"></a>                   <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">&quot;theta&quot;</span>, <span class="st">&quot;thetapred&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="proceso-de-estimación-y-benchmark.html#cb2-3" tabindex="-1"></a>  <span class="fu">as_draws_df</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">&quot;theta&quot;</span>))</span>
+<span id="cb2-4"><a href="proceso-de-estimación-y-benchmark.html#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="proceso-de-estimación-y-benchmark.html#cb2-5" tabindex="-1"></a>y_pred <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(y_pred)) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb2-6"><a href="proceso-de-estimación-y-benchmark.html#cb2-6" tabindex="-1"></a><span class="fu">colnames</span>(y_pred) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;iter_&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(y_pred))</span>
+<span id="cb2-7"><a href="proceso-de-estimación-y-benchmark.html#cb2-7" tabindex="-1"></a>y_pred <span class="sc">%&lt;&gt;%</span> <span class="fu">mutate</span>(<span class="at">id_Orden =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Asignar los valores posteriores a la comuna correspondiente.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="proceso-de-estimación-y-benchmark.html#cb3-1" tabindex="-1"></a>estimacionesPre <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(estimacionesPre, y_pred)</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Del censo extraer el total de personas por Región</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="proceso-de-estimación-y-benchmark.html#cb4-1" tabindex="-1"></a>total_hh <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;Data/Total_Hogares.rds&quot;</span>)</span>
+<span id="cb4-2"><a href="proceso-de-estimación-y-benchmark.html#cb4-2" tabindex="-1"></a>N_hh <span class="ot">&lt;-</span> total_hh <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="at">dam =</span> <span class="fu">str_sub</span>(dam2, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="proceso-de-estimación-y-benchmark.html#cb4-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dam_hh =</span> <span class="fu">sum</span>(NN_Hogar)) </span>
+<span id="cb4-4"><a href="proceso-de-estimación-y-benchmark.html#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="proceso-de-estimación-y-benchmark.html#cb4-5" tabindex="-1"></a><span class="fu">tba</span>(N_hh <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
+<table class="table table-striped lightable-classic" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: Arial Narrow; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+dam2
+</th>
+<th style="text-align:right;">
+NN_Hogar
+</th>
+<th style="text-align:left;">
+dam
+</th>
+<th style="text-align:right;">
+dam_hh
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+01101
+</td>
+<td style="text-align:right;">
+60226
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01107
+</td>
+<td style="text-align:right;">
+29699
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01401
+</td>
+<td style="text-align:right;">
+4188
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01402
+</td>
+<td style="text-align:right;">
+484
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01403
+</td>
+<td style="text-align:right;">
+488
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01404
+</td>
+<td style="text-align:right;">
+965
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01405
+</td>
+<td style="text-align:right;">
+1643
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:right;">
+97693
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02101
+</td>
+<td style="text-align:right;">
+105863
+</td>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:right;">
+174314
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02102
+</td>
+<td style="text-align:right;">
+3430
+</td>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:right;">
+174314
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02103
+</td>
+<td style="text-align:right;">
+358
+</td>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:right;">
+174314
+</td>
+</tr>
+</tbody>
+</table>
+<ol start="5" style="list-style-type: decimal">
+<li>Obtener las estimaciones directa por región o el nivel de agregación en el cual la encuesta es representativa.</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="proceso-de-estimación-y-benchmark.html#cb5-1" tabindex="-1"></a>directoDam <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/FIES_region.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="proceso-de-estimación-y-benchmark.html#cb5-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>( dam, <span class="at">ModerateSevere =</span> FIES)</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Realizar el consolidando información obtenida hasta el momento.</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="proceso-de-estimación-y-benchmark.html#cb6-1" tabindex="-1"></a>temp <span class="ot">&lt;-</span> estimacionesPre <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="proceso-de-estimación-y-benchmark.html#cb6-2" tabindex="-1"></a>  <span class="fu">inner_join</span>(N_hh ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="proceso-de-estimación-y-benchmark.html#cb6-3" tabindex="-1"></a>  <span class="fu">inner_join</span>(directoDam )</span></code></pre></div>
+<ol start="7" style="list-style-type: decimal">
+<li>Con la información organizada realizar de los ponderadores para cada uno de los valores posteriores</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="proceso-de-estimación-y-benchmark.html#cb7-1" tabindex="-1"></a>R_dam2 <span class="ot">&lt;-</span> temp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="proceso-de-estimación-y-benchmark.html#cb7-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb7-3"><a href="proceso-de-estimación-y-benchmark.html#cb7-3" tabindex="-1"></a>    <span class="fu">starts_with</span>(<span class="st">&quot;iter_&quot;</span>),</span>
+<span id="cb7-4"><a href="proceso-de-estimación-y-benchmark.html#cb7-4" tabindex="-1"></a>    <span class="sc">~</span></span>
+<span id="cb7-5"><a href="proceso-de-estimación-y-benchmark.html#cb7-5" tabindex="-1"></a>      <span class="fu">unique</span>(ModerateSevere) <span class="sc">/</span> <span class="fu">sum</span>((NN_Hogar  <span class="sc">/</span> dam_hh) <span class="sc">*</span> .),</span>
+<span id="cb7-6"><a href="proceso-de-estimación-y-benchmark.html#cb7-6" tabindex="-1"></a>    <span class="at">.names =</span> <span class="st">&quot;gk_{.col}&quot;</span></span>
+<span id="cb7-7"><a href="proceso-de-estimación-y-benchmark.html#cb7-7" tabindex="-1"></a>  ),</span>
+<span id="cb7-8"><a href="proceso-de-estimación-y-benchmark.html#cb7-8" tabindex="-1"></a>  <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&quot;iter_&quot;</span>), <span class="sc">~</span><span class="cn">NULL</span>)</span>
+<span id="cb7-9"><a href="proceso-de-estimación-y-benchmark.html#cb7-9" tabindex="-1"></a>  ) </span>
+<span id="cb7-10"><a href="proceso-de-estimación-y-benchmark.html#cb7-10" tabindex="-1"></a><span class="fu">tba</span>(R_dam2[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>)])</span></code></pre></div>
+<p>calculando los pesos para cada comuna</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="proceso-de-estimación-y-benchmark.html#cb8-1" tabindex="-1"></a>pesos <span class="ot">&lt;-</span> temp <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="proceso-de-estimación-y-benchmark.html#cb8-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">W_i =</span> NN_Hogar <span class="sc">/</span> dam_hh) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="proceso-de-estimación-y-benchmark.html#cb8-3" tabindex="-1"></a>  <span class="fu">select</span>(dam2, W_i)</span></code></pre></div>
+<ol start="8" style="list-style-type: decimal">
+<li>Multiplicar cada ponderador (<span class="math inline">\(gk_i\)</span>) por la respectiva realización posterior (<span class="math inline">\(iter_i\)</span>). Esto generará una estimación de benchmarking para cada uno de los valores posteriores.</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="proceso-de-estimación-y-benchmark.html#cb9-1" tabindex="-1"></a>names_iter <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">&quot;iter_&quot;</span>,<span class="fu">names</span>(temp),<span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-2"><a href="proceso-de-estimación-y-benchmark.html#cb9-2" tabindex="-1"></a>llave <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">names</span>(estimacionesPre),<span class="fu">names</span>(R_dam2))</span>
+<span id="cb9-3"><a href="proceso-de-estimación-y-benchmark.html#cb9-3" tabindex="-1"></a>paso <span class="ot">&lt;-</span> estimacionesPre <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(R_dam2 , <span class="at">by =</span> llave)</span>
+<span id="cb9-4"><a href="proceso-de-estimación-y-benchmark.html#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="proceso-de-estimación-y-benchmark.html#cb9-5" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> names_iter){</span>
+<span id="cb9-6"><a href="proceso-de-estimación-y-benchmark.html#cb9-6" tabindex="-1"></a>  <span class="fu">cat</span>(x,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-7"><a href="proceso-de-estimación-y-benchmark.html#cb9-7" tabindex="-1"></a>  columna_prefijo <span class="ot">&lt;-</span> <span class="fu">sym</span>(<span class="fu">paste0</span>(<span class="st">&quot;gk_&quot;</span>, x))</span>
+<span id="cb9-8"><a href="proceso-de-estimación-y-benchmark.html#cb9-8" tabindex="-1"></a>  columna_resultado <span class="ot">&lt;-</span> <span class="fu">sym</span>(<span class="fu">paste0</span>(<span class="st">&quot;RBench_&quot;</span>, x))</span>
+<span id="cb9-9"><a href="proceso-de-estimación-y-benchmark.html#cb9-9" tabindex="-1"></a>  paso <span class="sc">%&lt;&gt;%</span>  <span class="fu">mutate</span>(<span class="sc">!!</span><span class="at">columna_resultado :=</span> <span class="sc">!!</span><span class="fu">sym</span>(x) <span class="sc">*</span> <span class="sc">!!</span>columna_prefijo)</span>
+<span id="cb9-10"><a href="proceso-de-estimación-y-benchmark.html#cb9-10" tabindex="-1"></a>  </span>
+<span id="cb9-11"><a href="proceso-de-estimación-y-benchmark.html#cb9-11" tabindex="-1"></a>}</span>
+<span id="cb9-12"><a href="proceso-de-estimación-y-benchmark.html#cb9-12" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="proceso-de-estimación-y-benchmark.html#cb9-13" tabindex="-1"></a><span class="fu">saveRDS</span>(paso, <span class="at">file =</span> <span class="st">&quot;Data/replicas_RBench.rds&quot;</span>)</span></code></pre></div>
+<p>Los resultados obtenidos se muestra en la siguiente tabla.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="proceso-de-estimación-y-benchmark.html#cb10-1" tabindex="-1"></a>paso <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;Data/replicas_RBench.rds&quot;</span>)</span>
+<span id="cb10-2"><a href="proceso-de-estimación-y-benchmark.html#cb10-2" tabindex="-1"></a>paso_RBench <span class="ot">&lt;-</span> paso <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">&quot;RBench_&quot;</span>))</span>
+<span id="cb10-3"><a href="proceso-de-estimación-y-benchmark.html#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="proceso-de-estimación-y-benchmark.html#cb10-4" tabindex="-1"></a><span class="fu">tba</span>(paso_RBench[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)])</span></code></pre></div>
+<table class="table table-striped lightable-classic" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: Arial Narrow; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+RBench_iter_1
+</th>
+<th style="text-align:right;">
+RBench_iter_2
+</th>
+<th style="text-align:right;">
+RBench_iter_3
+</th>
+<th style="text-align:right;">
+RBench_iter_4
+</th>
+<th style="text-align:right;">
+RBench_iter_5
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.1764
+</td>
+<td style="text-align:right;">
+0.1794
+</td>
+<td style="text-align:right;">
+0.1795
+</td>
+<td style="text-align:right;">
+0.1809
+</td>
+<td style="text-align:right;">
+0.1807
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2996
+</td>
+<td style="text-align:right;">
+0.2915
+</td>
+<td style="text-align:right;">
+0.2909
+</td>
+<td style="text-align:right;">
+0.2931
+</td>
+<td style="text-align:right;">
+0.2941
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2137
+</td>
+<td style="text-align:right;">
+0.2333
+</td>
+<td style="text-align:right;">
+0.2343
+</td>
+<td style="text-align:right;">
+0.2130
+</td>
+<td style="text-align:right;">
+0.2137
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2093
+</td>
+<td style="text-align:right;">
+0.1996
+</td>
+<td style="text-align:right;">
+0.2007
+</td>
+<td style="text-align:right;">
+0.1818
+</td>
+<td style="text-align:right;">
+0.1758
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.1939
+</td>
+<td style="text-align:right;">
+0.1959
+</td>
+<td style="text-align:right;">
+0.1959
+</td>
+<td style="text-align:right;">
+0.1942
+</td>
+<td style="text-align:right;">
+0.1979
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2522
+</td>
+<td style="text-align:right;">
+0.2686
+</td>
+<td style="text-align:right;">
+0.2745
+</td>
+<td style="text-align:right;">
+0.2710
+</td>
+<td style="text-align:right;">
+0.2836
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2200
+</td>
+<td style="text-align:right;">
+0.2613
+</td>
+<td style="text-align:right;">
+0.2626
+</td>
+<td style="text-align:right;">
+0.2394
+</td>
+<td style="text-align:right;">
+0.2444
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.1937
+</td>
+<td style="text-align:right;">
+0.1867
+</td>
+<td style="text-align:right;">
+0.1872
+</td>
+<td style="text-align:right;">
+0.1943
+</td>
+<td style="text-align:right;">
+0.1878
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2287
+</td>
+<td style="text-align:right;">
+0.2235
+</td>
+<td style="text-align:right;">
+0.2277
+</td>
+<td style="text-align:right;">
+0.2229
+</td>
+<td style="text-align:right;">
+0.2278
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.2246
+</td>
+<td style="text-align:right;">
+0.2174
+</td>
+<td style="text-align:right;">
+0.2088
+</td>
+<td style="text-align:right;">
+0.2056
+</td>
+<td style="text-align:right;">
+0.1868
+</td>
+</tr>
+</tbody>
+</table>
+<ol start="9" style="list-style-type: decimal">
+<li>En proceso de estimación se hace calculando el promedio y desviación estándar para cada comuna a partir de l resultado anterior.</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="proceso-de-estimación-y-benchmark.html#cb11-1" tabindex="-1"></a>estimacionesBench <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-2"><a href="proceso-de-estimación-y-benchmark.html#cb11-2" tabindex="-1"></a>  <span class="at">dam =</span> paso<span class="sc">$</span>dam,</span>
+<span id="cb11-3"><a href="proceso-de-estimación-y-benchmark.html#cb11-3" tabindex="-1"></a>  <span class="at">dam2 =</span> paso<span class="sc">$</span>dam2,</span>
+<span id="cb11-4"><a href="proceso-de-estimación-y-benchmark.html#cb11-4" tabindex="-1"></a><span class="at">theta_pred_RBench_rep =</span> <span class="fu">apply</span>(paso_RBench,<span class="at">MARGIN =</span> <span class="dv">1</span>,mean),</span>
+<span id="cb11-5"><a href="proceso-de-estimación-y-benchmark.html#cb11-5" tabindex="-1"></a><span class="at">theta_pred_RBench_rep_sd =</span> <span class="fu">apply</span>(paso_RBench,<span class="at">MARGIN =</span> <span class="dv">1</span>,sd)</span>
+<span id="cb11-6"><a href="proceso-de-estimación-y-benchmark.html#cb11-6" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(pesos)</span>
+<span id="cb11-7"><a href="proceso-de-estimación-y-benchmark.html#cb11-7" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="proceso-de-estimación-y-benchmark.html#cb11-8" tabindex="-1"></a><span class="fu">tba</span>(estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
+<table class="table table-striped lightable-classic" style="width: auto !important; margin-left: auto; margin-right: auto; font-family: Arial Narrow; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+dam
+</th>
+<th style="text-align:left;">
+dam2
+</th>
+<th style="text-align:right;">
+theta_pred_RBench_rep
+</th>
+<th style="text-align:right;">
+theta_pred_RBench_rep_sd
+</th>
+<th style="text-align:right;">
+W_i
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+01101
+</td>
+<td style="text-align:right;">
+0.1862
+</td>
+<td style="text-align:right;">
+0.0062
+</td>
+<td style="text-align:right;">
+0.6165
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+01107
+</td>
+<td style="text-align:right;">
+0.2786
+</td>
+<td style="text-align:right;">
+0.0123
+</td>
+<td style="text-align:right;">
+0.3040
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+01401
+</td>
+<td style="text-align:right;">
+0.2247
+</td>
+<td style="text-align:right;">
+0.0143
+</td>
+<td style="text-align:right;">
+0.0429
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+01405
+</td>
+<td style="text-align:right;">
+0.2085
+</td>
+<td style="text-align:right;">
+0.0173
+</td>
+<td style="text-align:right;">
+0.0168
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:left;">
+02101
+</td>
+<td style="text-align:right;">
+0.1934
+</td>
+<td style="text-align:right;">
+0.0047
+</td>
+<td style="text-align:right;">
+0.6073
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:left;">
+02102
+</td>
+<td style="text-align:right;">
+0.2327
+</td>
+<td style="text-align:right;">
+0.0219
+</td>
+<td style="text-align:right;">
+0.0197
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:left;">
+02104
+</td>
+<td style="text-align:right;">
+0.2300
+</td>
+<td style="text-align:right;">
+0.0235
+</td>
+<td style="text-align:right;">
+0.0208
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:left;">
+02201
+</td>
+<td style="text-align:right;">
+0.1942
+</td>
+<td style="text-align:right;">
+0.0093
+</td>
+<td style="text-align:right;">
+0.2781
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:left;">
+02203
+</td>
+<td style="text-align:right;">
+0.2536
+</td>
+<td style="text-align:right;">
+0.0240
+</td>
+<td style="text-align:right;">
+0.0172
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02
+</td>
+<td style="text-align:left;">
+02301
+</td>
+<td style="text-align:right;">
+0.2192
+</td>
+<td style="text-align:right;">
+0.0207
+</td>
+<td style="text-align:right;">
+0.0459
+</td>
+</tr>
+</tbody>
+</table>
+<ol start="10" style="list-style-type: decimal">
+<li>Validación: Estimación FH con Benchmark</li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="proceso-de-estimación-y-benchmark.html#cb12-1" tabindex="-1"></a>estimacionesBench <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(dam) <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="proceso-de-estimación-y-benchmark.html#cb12-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">theta_reg_RB =</span> <span class="fu">sum</span>(W_i <span class="sc">*</span> theta_pred_RBench_rep)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="proceso-de-estimación-y-benchmark.html#cb12-3" tabindex="-1"></a>  <span class="fu">left_join</span>(directoDam, <span class="at">by =</span> <span class="st">&quot;dam&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="proceso-de-estimación-y-benchmark.html#cb12-4" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">tba</span>()</span></code></pre></div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estimación-de-la-escala-de-experiencia-de-inseguridad-alimentaria.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="validación-de-los-resultados..html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/psirusteam/2021ASDA/Modelo_areas_FIES_FAO.qmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria.pdf", "Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria.epub", "Metodologías bayesianas para la estimación de la Escala de Experiencia de Inseguridad Alimentaria.mobi"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+},
+"tconfig": null
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

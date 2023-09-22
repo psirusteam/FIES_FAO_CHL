@@ -25,10 +25,11 @@ select <- dplyr::select
 dam2 <- "comuna"
 ## Lectura de base de datos
 
-model_FH_Binomial <- readRDS("Data/model_FH_Binomial2.rds")
+model_FH_beta_logitic <- readRDS("Data/model_FH_beta_logitic.rds")
 id_orden <- readRDS("Data/id_Orden.rds")
 
-y_pred <- as.array(model_FH_Binomial, pars = "thetaLP") %>% 
+y_pred <- as.array(model_FH_beta_logitic,
+                   pars = c("theta","thetapred")) %>% 
   as_draws_df() %>% select(matches("theta"))
 
 y_pred <- data.frame(t(y_pred)) %>% as_tibble()
@@ -38,8 +39,7 @@ y_pred %<>% mutate(id_Orden = 1:n())
 # 0. Leer estimaciones del modelo
 
 estimacionesPre <- readRDS("Data/id_Orden.rds") %>%
-  transmute(dam2 = haven::as_factor(comuna, levels = "values"),
-            dam2 = str_pad(width = 5, dam2, pad = "0"),
+  transmute(dam2 = str_pad(width = 5,comuna, pad = "0"),
             dam = str_sub(dam2,1,2),
             id_Orden)
 estimacionesPre <- inner_join(estimacionesPre,y_pred)
@@ -121,7 +121,8 @@ estimacionesBench %>% group_by(dam) %>%
 estimacionesPre <- readRDS("Data/estimacionesPre.rds") %>%
   transmute(dam2 = comuna,
             dam = str_sub(dam2,1,2),
-            theta_pred,theta_pred_EE)
+            theta_pred = pred_beta_log,
+            theta_pred_EE = pred_beta_log_EE)
 
 
 

@@ -53,29 +53,3 @@ table(dir_estim_comuna_CASEN_2020_hh2$calidad2)
 table(dir_estim_comuna_CASEN_2020_hh$calidad2)
 saveRDS(dir_estim_comuna_CASEN_2020_hh2, "Data/dir_estim_comuna_CASEN_2020_hh2.rds")
 
-dir_estim_comuna_CASEN_2020_hh_antes <- readRDS("Data/data_v1/dir_estim_comuna_CASEN_2020_hh.rds")
-dir_estim_comuna_CASEN_2020_hh2_antes <- filter_comunas(dir_estim_comuna_CASEN_2020_hh_antes)
-table(dir_estim_comuna_CASEN_2020_hh2_antes$calidad2)
-table(dir_estim_comuna_CASEN_2020_hh_antes$calidad2)
-
-
-paso <- full_join(
-dir_estim_comuna_CASEN_2020_hh2 %>% select(comuna, calidad2),
-dir_estim_comuna_CASEN_2020_hh2_antes %>% select(comuna, calidad2),
-by = "comuna")
-
-table(paso$calidad2.x,paso$calidad2.y)
-
-
-paso <- full_join(
-  dir_estim_comuna_CASEN_2020_hh2,
-  dir_estim_comuna_CASEN_2020_hh2_antes,
-  by = "comuna")
-
-table(paso$calidad2.x,paso$calidad2.y)
-table(paso$excn50.x,paso$excn50.y)
-table(paso$incdf14.x,paso$incdf14.y)
-table(paso$excn50.x,paso$excn50.y)
-table(paso$excrho.x,paso$excrho.y)
-table(paso$excdf2.x,paso$excdf2.y)
-
