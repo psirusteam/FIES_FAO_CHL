@@ -59,8 +59,8 @@ data_syn <-
 names_cov <- data_dir %>% select(accesibilidad_hospitales:region) %>% 
   names()
 
-formula_mod <- formula(paste("~",paste(names_cov),
-                 collapse = " + "))
+formula_mod <- formula(paste("~",paste0(names_cov,
+                 collapse = " + ")))
 
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
@@ -156,4 +156,6 @@ p12 <- ggplot(temp, aes(x = pred_arcoseno, y = FH)) +
   geom_abline(slope = 1,intercept = 0, colour = "red") +
   theme_bw(10) 
 
-
+ggsave(plot = p12,
+       filename =  "Data/RecursosBook/02/2_freq_vs_Bayes_arcosin.jpeg", 
+       scale = 3)

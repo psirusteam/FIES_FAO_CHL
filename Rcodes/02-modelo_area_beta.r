@@ -58,8 +58,8 @@ data_syn <-
 names_cov <- data_dir %>% select(accesibilidad_hospitales:region) %>% 
   names()
 
-formula_mod <- formula(paste("~",paste(names_cov),
-                             collapse = " + "))
+formula_mod <- formula(paste("~", paste0(names_cov,
+                                         collapse = " + ")))
 ## Dominios observados
 Xdat <- model.matrix(formula_mod, data = data_dir)
 
